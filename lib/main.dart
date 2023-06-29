@@ -11,7 +11,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Blood Bank',
+      home: Scaffold(
+        body: (SafeArea(
+          child: Text("home page"),
+        )),
+      ),
     );
   }
 }
