@@ -25,20 +25,25 @@ class App extends StatelessWidget {
               // crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Container(
-                  height: 400,
+                  height: 450,
+                  margin: EdgeInsets.all(0),
                   alignment: Alignment.bottomCenter,
-                  child: Image.asset('images/health-check.png'),
+                  child: Image.asset(
+                    'images/health-check.png',
+                    fit: BoxFit.fitWidth,
+                    height: 278,
+                  ),
                 ),
                 Container(
-                  alignment: Alignment.center,
-                  width: 300,
                   margin: EdgeInsets.fromLTRB(0, 100, 0, 0),
+                  width: 270,
                   child: Text(
                     "To be a responsible donor, you must get a check-up.",
                     style: TextStyle(
-                      fontSize: 18,
-                      color: Colors.white,
-                    ),
+                        fontSize: 20,
+                        color: Colors.white,
+                        fontFamily: 'PoorStory'),
+                    textAlign: TextAlign.center,
                   ),
                 )
               ],
