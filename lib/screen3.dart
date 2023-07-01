@@ -25,20 +25,24 @@ class App extends StatelessWidget {
               // crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Container(
-                  height: 400,
+                  height: 450,
+                  margin: EdgeInsets.all(0),
                   alignment: Alignment.bottomCenter,
-                  child: Image.asset('images/puzzle.png'),
+                  child: Image.asset(
+                    'images/puzzle.png',
+                    fit: BoxFit.fitWidth,
+                    height: 278,
+                  ),
                 ),
                 Container(
-                  alignment: Alignment.center,
-                  width: 300,
                   margin: EdgeInsets.fromLTRB(0, 100, 0, 0),
                   child: Text(
                     "Your blood type should be compatible with the receiver’s type.",
                     style: TextStyle(
-                      fontSize: 18,
-                      color: Colors.white,
-                    ),
+                        fontSize: 20,
+                        color: Colors.white,
+                        fontFamily: 'PoorStory'),
+                    textAlign: TextAlign.center,
                   ),
                 )
               ],
