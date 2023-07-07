@@ -1,17 +1,14 @@
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(App());
-}
+class Screen2 extends StatelessWidget {
+  const Screen2({super.key});
 
-class App extends StatelessWidget {
-  const App({super.key});
-
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
+        resizeToAvoidBottomInset: false,
         body: (SafeArea(
           child: Container(
             decoration: BoxDecoration(
@@ -26,18 +23,18 @@ class App extends StatelessWidget {
               children: [
                 Container(
                   height: 450,
-                  margin: EdgeInsets.all(0),
-                  alignment: Alignment.bottomRight,
+                  alignment: Alignment.bottomCenter,
                   child: Image.asset(
-                    'images/blood-bag.png',
+                    'images/health-check.png',
                     fit: BoxFit.fitWidth,
                     height: 278,
                   ),
                 ),
                 Container(
                   margin: EdgeInsets.fromLTRB(0, 100, 0, 0),
+                  width: 270,
                   child: Text(
-                    "Donate your blood and save a life.",
+                    "To be a responsible donor, you must get a check-up.",
                     style: TextStyle(
                         fontSize: 20,
                         color: Colors.white,
