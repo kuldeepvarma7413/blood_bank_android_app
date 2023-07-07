@@ -16,11 +16,17 @@ class otpverification extends StatefulWidget {
 }
 
 class _otpverificationState extends State<otpverification> {
-  final String number;
   _otpverificationState({required this.number});
+  final String number;
+  FocusNode focus2 = new FocusNode();
+  FocusNode focus3 = new FocusNode();
+  FocusNode focus4 = new FocusNode();
+  FocusNode focus5 = new FocusNode();
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
         body: SafeArea(
             child: Container(
@@ -59,10 +65,8 @@ class _otpverificationState extends State<otpverification> {
                           child: TextFormField(
                             onChanged: (value) {
                               if (value.length == 1) {
-                                FocusScope.of(context).nextFocus();
-                              }
-                              if (value.length == 0) {
-                                FocusScope.of(context).previousFocus();
+                                // Focus.req
+                                FocusScope.of(context).requestFocus(focus2);
                               }
                             },
                             // onSaved: (pin1) {},
@@ -90,12 +94,10 @@ class _otpverificationState extends State<otpverification> {
                           child: TextFormField(
                             onChanged: (value) {
                               if (value.length == 1) {
-                                FocusScope.of(context).nextFocus();
-                              }
-                              if (value.length == 0) {
-                                FocusScope.of(context).previousFocus();
+                                FocusScope.of(context).requestFocus(focus3);
                               }
                             },
+                            focusNode: focus2,
                             onSaved: (pin2) {},
                             keyboardType: TextInputType.number,
                             textAlign: TextAlign.center,
@@ -120,12 +122,10 @@ class _otpverificationState extends State<otpverification> {
                           child: TextFormField(
                             onChanged: (value) {
                               if (value.length == 1) {
-                                FocusScope.of(context).nextFocus();
-                              }
-                              if (value.length == 0) {
-                                FocusScope.of(context).previousFocus();
+                                FocusScope.of(context).requestFocus(focus4);
                               }
                             },
+                            focusNode: focus3,
                             onSaved: (pin3) {},
                             keyboardType: TextInputType.number,
                             textAlign: TextAlign.center,
@@ -150,12 +150,10 @@ class _otpverificationState extends State<otpverification> {
                           child: TextFormField(
                             onChanged: (value) {
                               if (value.length == 1) {
-                                FocusScope.of(context).nextFocus();
-                              }
-                              if (value.length == 0) {
-                                FocusScope.of(context).previousFocus();
+                                FocusScope.of(context).requestFocus(focus5);
                               }
                             },
+                            focusNode: focus4,
                             onSaved: (pin4) {},
                             keyboardType: TextInputType.number,
                             textAlign: TextAlign.center,
@@ -199,6 +197,7 @@ class _otpverificationState extends State<otpverification> {
                 Container(
                   margin: EdgeInsets.fromLTRB(0, 40, 0, 0),
                   child: ElevatedButton(
+                    focusNode: focus5,
                     child: Text(
                       "VERIFY",
                       style:
