@@ -1,14 +1,19 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'Screen1.dart';
 import 'Screen2.dart';
 import 'Screen3.dart';
 import 'Screen4.dart';
 import 'NumberAuthentication.dart';
-import 'Signup.dart';
-import 'home.dart';
-import 'findDonors.dart';
+// import 'Signup.dart';
+// import 'home.dart';
+// import 'findDonors.dart';
+// import 'otpverification.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+
   runApp(MaterialApp(
     home: MyWidget(),
   ));
@@ -26,9 +31,10 @@ class MyWidget extends StatelessWidget {
       controller: controller,
       scrollDirection: Axis.horizontal,
       children: [
-        findDonors(),
-        home(),
-        signup(),
+        // otpverification(),
+        // findDonors(),
+        // home(),
+        // signup(),
         Screen1(),
         Screen2(),
         Screen3(),
