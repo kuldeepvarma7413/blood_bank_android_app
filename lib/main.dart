@@ -5,6 +5,8 @@ import 'Screen3.dart';
 import 'Screen4.dart';
 import 'NumberAuthentication.dart';
 import 'Signup.dart';
+import 'home.dart';
+import 'findDonors.dart';
 
 void main() {
   runApp(MaterialApp(
@@ -24,6 +26,8 @@ class MyWidget extends StatelessWidget {
       controller: controller,
       scrollDirection: Axis.horizontal,
       children: [
+        findDonors(),
+        home(),
         signup(),
         Screen1(),
         Screen2(),
