@@ -1,3 +1,7 @@
+import 'package:blood_bank/NumberAuthentication.dart';
+import 'package:blood_bank/messages.dart';
+import 'package:blood_bank/requests.dart';
+import 'package:blood_bank/history.dart';
 import 'package:flutter/material.dart';
 
 class Navbar extends StatelessWidget {
@@ -46,7 +50,10 @@ class Navbar extends StatelessWidget {
                   "Messages",
                   style: TextStyle(fontSize: 18),
                 ),
-                onTap: () {},
+                onTap: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => messages()));
+                },
               ),
               Divider(),
               ListTile(
@@ -55,7 +62,10 @@ class Navbar extends StatelessWidget {
                   color: Color.fromRGBO(255, 72, 72, 1),
                 ),
                 title: Text("Requests", style: TextStyle(fontSize: 18)),
-                onTap: () {},
+                onTap: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => requests()));
+                },
               ),
               Divider(),
               ListTile(
@@ -64,7 +74,10 @@ class Navbar extends StatelessWidget {
                   color: Color.fromRGBO(255, 72, 72, 1),
                 ),
                 title: Text("History", style: TextStyle(fontSize: 18)),
-                onTap: () {},
+                onTap: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => history()));
+                },
               ),
               Divider(),
               ListTile(
@@ -87,7 +100,7 @@ class Navbar extends StatelessWidget {
                 onPressed: () {},
                 child: Container(
                   margin: EdgeInsets.all(0),
-                  padding: EdgeInsets.all(20),
+                  padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
                   decoration: BoxDecoration(
                       border: Border.all(
                           width: 1, color: Color.fromRGBO(255, 72, 72, 1)),
@@ -95,12 +108,21 @@ class Navbar extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        "Signout",
-                        style: TextStyle(
-                            color: Color.fromRGBO(255, 72, 72, 1),
-                            fontSize: 18),
-                      ),
+                      TextButton(
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        NumberAuthentication()));
+                          },
+                          child: Text(
+                            "Signout",
+                            style: TextStyle(fontSize: 18),
+                          ),
+                          style: ButtonStyle(
+                              foregroundColor: MaterialStatePropertyAll(
+                                  Color.fromRGBO(255, 72, 72, 1)))),
                       Image.asset('images/logout.png')
                     ],
                   ),

@@ -6,7 +6,7 @@ import 'Screen3.dart';
 import 'Screen4.dart';
 import 'NumberAuthentication.dart';
 // import 'Signup.dart';
-// import 'home.dart';
+import 'home.dart';
 // import 'findDonors.dart';
 // import 'otpverification.dart';
 
@@ -33,7 +33,7 @@ class MyWidget extends StatelessWidget {
       children: [
         // otpverification(),
         // findDonors(),
-        // home(),
+        home(),
         // signup(),
         Screen1(),
         Screen2(),

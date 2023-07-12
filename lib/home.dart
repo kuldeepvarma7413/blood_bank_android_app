@@ -1,3 +1,4 @@
+import 'package:blood_bank/findDonors.dart';
 import 'package:flutter/material.dart';
 import 'Navbar.dart';
 
@@ -130,7 +131,12 @@ class _homeState extends State<home> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => findDonors()));
+                      },
                       style: ButtonStyle(
                           backgroundColor: MaterialStatePropertyAll(
                               Color.fromRGBO(255, 72, 72, 1)),

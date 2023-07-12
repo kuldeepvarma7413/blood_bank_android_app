@@ -1,3 +1,4 @@
+import 'package:blood_bank/home.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -236,7 +237,12 @@ class _signupState extends State<signup> {
                             style: TextStyle(
                                 fontFamily: 'poorStory', fontSize: 20),
                           ),
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => home()));
+                          },
                         ),
                       )
                     ],
