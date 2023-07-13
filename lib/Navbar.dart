@@ -95,37 +95,33 @@ class Navbar extends StatelessWidget {
             height: 50,
           ),
           Container(
-            margin: EdgeInsets.all(20),
-            child: TextButton(
-                onPressed: () {},
-                child: Container(
-                  margin: EdgeInsets.all(0),
-                  padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
-                  decoration: BoxDecoration(
-                      border: Border.all(
-                          width: 1, color: Color.fromRGBO(255, 72, 72, 1)),
-                      borderRadius: BorderRadius.circular(5)),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      TextButton(
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        NumberAuthentication()));
-                          },
-                          child: Text(
-                            "Signout",
-                            style: TextStyle(fontSize: 18),
-                          ),
-                          style: ButtonStyle(
-                              foregroundColor: MaterialStatePropertyAll(
-                                  Color.fromRGBO(255, 72, 72, 1)))),
-                      Image.asset('images/logout.png')
-                    ],
-                  ),
+            padding: EdgeInsets.all(20),
+            child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    padding: EdgeInsets.all(20),
+                    backgroundColor: Colors.white,
+                    shadowColor: Colors.transparent,
+                    side: BorderSide(
+                      width: 2,
+                      color: Color.fromRGBO(255, 72, 72, 1),
+                    )),
+                onPressed: () {
+                  Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => NumberAuthentication()),
+                      (route) => false);
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "Signout",
+                      style: TextStyle(
+                          fontSize: 18, color: Color.fromRGBO(255, 72, 72, 1)),
+                    ),
+                    Image.asset('images/logout.png')
+                  ],
                 )),
           )
         ],

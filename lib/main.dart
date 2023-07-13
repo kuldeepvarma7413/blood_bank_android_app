@@ -1,14 +1,11 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'Screen1.dart';
 import 'Screen2.dart';
 import 'Screen3.dart';
 import 'Screen4.dart';
 import 'NumberAuthentication.dart';
-// import 'Signup.dart';
-import 'home.dart';
-// import 'findDonors.dart';
-// import 'otpverification.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -31,10 +28,6 @@ class MyWidget extends StatelessWidget {
       controller: controller,
       scrollDirection: Axis.horizontal,
       children: [
-        // otpverification(),
-        // findDonors(),
-        home(),
-        // signup(),
         Screen1(),
         Screen2(),
         Screen3(),

@@ -78,9 +78,23 @@ class _messagingState extends State<messaging> {
                           margin: EdgeInsets.fromLTRB(10, 0, 10, 20),
                           padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
                           decoration: BoxDecoration(
-                              border: Border.all(width: 2),
+                              border: Border.all(
+                                  width: 2,
+                                  color: Color.fromRGBO(255, 130, 130, 1)),
                               borderRadius: BorderRadius.circular(5)),
-                          child: TextField(),
+                          child: TextField(
+                            style: TextStyle(
+                                color: Color.fromRGBO(255, 130, 130, 1)),
+                            decoration: InputDecoration(
+                                suffixIcon: Icon(
+                                  Icons.send,
+                                  color: Color.fromRGBO(255, 130, 130, 1),
+                                ),
+                                hintText: "Type a message",
+                                hintStyle: TextStyle(
+                                    color: Color.fromRGBO(255, 130, 130, 1)),
+                                border: InputBorder.none),
+                          ),
                         ),
                       ],
                     ),

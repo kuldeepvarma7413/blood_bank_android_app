@@ -467,33 +467,3 @@ class _findDonorsState extends State<findDonors> {
     );
   }
 }
-
-// List<Widget> getBloodContainer() {
-//   bool _flag = true;
-//   List<String> bloodGroups = ["A+", "A-", "B+", "B-", "O+", "O-", "AB+", "AB-"];
-
-//   return bloodGroups
-//       .asMap()
-//       .entries
-//       .map((e) => ElevatedButton(onPressed: (){
-//         setstate
-//       }, child: child)
-//             child: 
-//         )
-//       .toList();
-  // Container(
-  //       height: 50,
-  //       width: 50,
-  //       decoration: BoxDecoration(
-  //         borderRadius: BorderRadius.circular(5),
-  //         color: Color.fromRGBO(255, 72, 72, 1),
-  //       ),
-  //       alignment: Alignment.center,
-  //       child: Text(
-  //         bloodGroups[e.key],
-  //         style: TextStyle(color: Colors.white),
-  //         textAlign: TextAlign.center,
-  //       ),
-  //     ))
-  // .toList();
-// }

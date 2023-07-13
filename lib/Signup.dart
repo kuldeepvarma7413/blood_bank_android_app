@@ -238,10 +238,10 @@ class _signupState extends State<signup> {
                                 fontFamily: 'poorStory', fontSize: 20),
                           ),
                           onPressed: () {
-                            Navigator.push(
+                            Navigator.pushAndRemoveUntil(
                                 context,
-                                MaterialPageRoute(
-                                    builder: (context) => home()));
+                                MaterialPageRoute(builder: (context) => home()),
+                                (route) => false);
                           },
                         ),
                       )
