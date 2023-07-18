@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>734599098605-ui815ihu4v7vf46pmopp5basjjtt60ov.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.734599098605-ui815ihu4v7vf46pmopp5basjjtt60ov</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>734599098605-iog4ne4dqesmugnljm1nqi3prfes62i2.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyCyRWLfijWqzmkX5v9KaVyMZ8tV6AZDGBo</string>
+	<key>GCM_SENDER_ID</key>
+	<string>734599098605</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.bloodBank</string>
+	<key>PROJECT_ID</key>
+	<string>blood-bank-android-9ef0f</string>
+	<key>STORAGE_BUCKET</key>
+	<string>blood-bank-android-9ef0f.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:734599098605:ios:9bb1760fe598ec63b89ce4</string>
+</dict>
+</plist>

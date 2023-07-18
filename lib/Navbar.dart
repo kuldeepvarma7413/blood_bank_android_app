@@ -1,12 +1,21 @@
 import 'package:blood_bank/NumberAuthentication.dart';
+import 'package:blood_bank/database/db_fun.dart';
 import 'package:blood_bank/messages.dart';
 import 'package:blood_bank/requests.dart';
 import 'package:blood_bank/history.dart';
 import 'package:flutter/material.dart';
 
-class Navbar extends StatelessWidget {
-  const Navbar({super.key});
+class Navbar extends StatefulWidget {
+  List<String> data = [];
+  Navbar(this.data);
 
+  @override
+  State<Navbar> createState() => _NavbarState(data);
+}
+
+class _NavbarState extends State<Navbar> {
+  List<String> data = [];
+  _NavbarState(this.data);
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -64,7 +73,7 @@ class Navbar extends StatelessWidget {
                 title: Text("Requests", style: TextStyle(fontSize: 18)),
                 onTap: () {
                   Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => requests()));
+                      MaterialPageRoute(builder: (context) => requests(data)));
                 },
               ),
               Divider(),

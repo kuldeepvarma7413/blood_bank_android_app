@@ -96,22 +96,29 @@ class NumberAuthentication extends StatelessWidget {
                         fontWeight: FontWeight.w500,
                       ),
                     ),
-                    onPressed: () async {
-                      await FirebaseAuth.instance.verifyPhoneNumber(
-                        phoneNumber: "${countryCode + number}",
-                        verificationCompleted:
-                            (PhoneAuthCredential credential) {},
-                        verificationFailed: (FirebaseAuthException e) {},
-                        codeSent: (String verificationId, int? resendToken) {
-                          NumberAuthentication.verify = verificationId;
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => otpverification()));
-                        },
-                        codeAutoRetrievalTimeout: (String verificationId) {},
-                      );
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => otpverification()));
                     },
+                    // onPressed: () async {
+                    //   CircularProgressIndicator();
+                    //   await FirebaseAuth.instance.verifyPhoneNumber(
+                    //     phoneNumber: "${countryCode + number}",
+                    //     verificationCompleted:
+                    //         (PhoneAuthCredential credential) {},
+                    //     verificationFailed: (FirebaseAuthException e) {},
+                    //     codeSent: (String verificationId, int? resendToken) {
+                    //       NumberAuthentication.verify = verificationId;
+                    //       Navigator.push(
+                    //           context,
+                    //           MaterialPageRoute(
+                    //               builder: (context) => otpverification()));
+                    //     },
+                    //     codeAutoRetrievalTimeout: (String verificationId) {},
+                    //   );
+                    // },
                   ),
                 )
               ],

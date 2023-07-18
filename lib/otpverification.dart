@@ -1,4 +1,6 @@
 import 'package:blood_bank/NumberAuthentication.dart';
+import 'package:blood_bank/database/db_fun.dart';
+import 'package:blood_bank/home.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -98,22 +100,43 @@ class _otpverificationState extends State<otpverification> {
                         elevation: 4,
                         padding: EdgeInsets.fromLTRB(100, 20, 100, 20),
                         backgroundColor: Color.fromRGBO(250, 72, 72, 1)),
-                    onPressed: () async {
-                      try {
-                        PhoneAuthCredential credential =
-                            PhoneAuthProvider.credential(
-                                verificationId: NumberAuthentication.verify,
-                                smsCode: code);
+                    // onPressed: () async {
+                    //   try {
+                    //     PhoneAuthCredential credential =
+                    //         PhoneAuthProvider.credential(
+                    //             verificationId: NumberAuthentication.verify,
+                    //             smsCode: code);
 
-                        // Sign the user in (or link) with the credential
-                        await auth.signInWithCredential(credential);
-                        Navigator.pushAndRemoveUntil(
-                            context,
-                            MaterialPageRoute(builder: (context) => signup()),
-                            (route) => false);
-                      } catch (e) {
-                        print(e);
-                      }
+                    //     // Sign the user in (or link) with the credential
+                    //     await auth.signInWithCredential(credential);
+                    //     if (await DatabaseHelper()
+                    //         .getExistance(NumberAuthentication.number)) {
+                    //       List<String> data = await DatabaseHelper()
+                    //           .getdata(NumberAuthentication.number);
+                    //       Navigator.pushAndRemoveUntil(
+                    //           context,
+                    //           MaterialPageRoute(
+                    //               builder: (context) => home(data)),
+                    //           (route) => false);
+                    //     } else {
+                    //       Navigator.pushAndRemoveUntil(
+                    //           context,
+                    //           MaterialPageRoute(builder: (context) => signup()),
+                    //           (route) => false);
+                    //     }
+                    //   } catch (e) {
+                    //     print(e);
+                    //   }
+                    // },
+                    onPressed: () async {
+                      List<String> data = await DatabaseHelper()
+                          .getdata(NumberAuthentication.number);
+                      print(data[0]);
+                      print("done");
+                      Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(builder: (context) => home(data)),
+                          (route) => false);
                     },
                   ),
                 )

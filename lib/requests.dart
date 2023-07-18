@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
 
-import 'home.dart';
+import 'database/db_fun.dart';
 
 class requests extends StatefulWidget {
-  const requests({super.key});
+  List<String> data;
+  requests(this.data);
 
   @override
-  State<requests> createState() => _requestsState();
+  State<requests> createState() => _requestsState(data);
 }
 
 class _requestsState extends State<requests> {
+  List<String> data = [];
+  _requestsState(this.data);
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -41,9 +44,11 @@ class _requestsState extends State<requests> {
                 child: SingleChildScrollView(
                     physics: BouncingScrollPhysics(),
                     child: Container(
-                      child: Column(
-                        children: getRequests(),
-                      ),
+                      child: Text("gii"),
+                      // child: StreamBuilder(builder: builder),
+                      // child: Column(
+                      //   children: getRequests(),
+                      // ),
                     )),
               ),
             )));
@@ -51,15 +56,14 @@ class _requestsState extends State<requests> {
 }
 
 List<Widget> getRequests() {
+  // request lists in navbar and then pass here
+  // List<String> users = getuser();
   List<String> users = [
-    "Requester1",
-    "Requester",
-    "Requester3",
-    "Requester4",
-    "Requester5",
-    "Requester6",
-    "Requester7",
-    "Requester8"
+    "12345",
+    "12344",
+    "123655",
+    "12346",
+    "12348",
   ];
 
   return users

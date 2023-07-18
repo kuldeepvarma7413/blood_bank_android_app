@@ -1,6 +1,8 @@
+import 'package:blood_bank/database/db_fun.dart';
 import 'package:blood_bank/home.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+
+import 'NumberAuthentication.dart';
 
 class signup extends StatefulWidget {
   const signup({super.key});
@@ -18,18 +20,23 @@ class _signupState extends State<signup> {
   }
 
   // Initial Selected Value
-  String dropdownvalue = 'A +';
+  String dropdownvalue = 'A+';
+  String age = "";
+  String number = NumberAuthentication.number;
+  String name = "";
+  String healthCondition = "";
+  String dob = "";
 
   // List of items in our dropdown menu
   var items = [
-    'A +',
-    'A -',
-    'B +',
-    'B -',
-    'AB +',
-    'AB -',
-    'O +',
-    'O -',
+    'A+',
+    'A-',
+    'B+',
+    'B-',
+    'AB+',
+    'AB-',
+    'O+',
+    'O-',
   ];
 
   @override
@@ -86,6 +93,9 @@ class _signupState extends State<signup> {
                                 borderSide: BorderSide(color: Colors.white)),
                             focusedBorder: UnderlineInputBorder(
                                 borderSide: BorderSide(color: Colors.white))),
+                        onChanged: (value) {
+                          name = value;
+                        },
                       ),
 
                       // Date of Birth
@@ -119,8 +129,7 @@ class _signupState extends State<signup> {
 
                             if (pickedDate != null) {
                               print(pickedDate);
-                              String formattedDate =
-                                  DateFormat('dd-MM-yyyy').format(pickedDate);
+                              String formattedDate = pickedDate.toString();
                               setState(() {
                                 dateinput.text =
                                     formattedDate; //set output date to TextField value.
@@ -150,6 +159,9 @@ class _signupState extends State<signup> {
                                 borderSide: BorderSide(color: Colors.white)),
                             focusedBorder: UnderlineInputBorder(
                                 borderSide: BorderSide(color: Colors.white))),
+                        onChanged: (value) {
+                          age = value;
+                        },
                       ),
 
                       // Health conditions
@@ -173,6 +185,9 @@ class _signupState extends State<signup> {
                                 borderSide: BorderSide(color: Colors.white)),
                             focusedBorder: UnderlineInputBorder(
                                 borderSide: BorderSide(color: Colors.white))),
+                        onChanged: (value) {
+                          healthCondition = value;
+                        },
                       ),
 
                       // Blood Group
@@ -189,14 +204,15 @@ class _signupState extends State<signup> {
                       Container(
                         width: MediaQuery.of(context).size.width,
                         child: DropdownButton(
-                          style: TextStyle(color: Colors.white, fontSize: 16),
+                          style: const TextStyle(
+                              color: Colors.white, fontSize: 16),
                           underline: Container(
                             height: 1,
                             color: Colors.white,
                           ),
                           dropdownColor: Color.fromRGBO(255, 69, 69, 1),
                           // Initial Value
-                          value: dropdownvalue,
+                          value: items[0],
 
                           // Down Arrow Icon
                           icon: const Icon(null),
@@ -237,11 +253,22 @@ class _signupState extends State<signup> {
                             style: TextStyle(
                                 fontFamily: 'poorStory', fontSize: 20),
                           ),
-                          onPressed: () {
-                            Navigator.pushAndRemoveUntil(
-                                context,
-                                MaterialPageRoute(builder: (context) => home()),
-                                (route) => false);
+                          onPressed: () async {
+                            if (await DatabaseHelper().addUser(
+                                age,
+                                dropdownvalue,
+                                dateinput.text,
+                                healthCondition,
+                                name,
+                                number)) {
+                              List<String> data =
+                                  await DatabaseHelper().getdata(number);
+                              Navigator.pushAndRemoveUntil(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => home(data)),
+                                  (route) => false);
+                            }
                           },
                         ),
                       )

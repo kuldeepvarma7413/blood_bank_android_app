@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 
-import 'home.dart';
+import 'database/db_fun.dart';
 
 class findDonors extends StatefulWidget {
-  const findDonors({super.key});
+  List<String> data = [];
+  findDonors(this.data);
 
   @override
-  State<findDonors> createState() => _findDonorsState();
+  State<findDonors> createState() => _findDonorsState(data);
 }
 
 bool _flag1 = true;
@@ -22,8 +23,11 @@ bool _female = false;
 bool _family = true;
 bool _friend = false;
 bool _other = false;
+String age = "";
 
 class _findDonorsState extends State<findDonors> {
+  List<String> data = [];
+  _findDonorsState(this.data);
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -420,6 +424,9 @@ class _findDonorsState extends State<findDonors> {
                         height: 50,
                         child: TextField(
                           cursorColor: Color.fromRGBO(255, 69, 69, 1),
+                          onChanged: (value) {
+                            age = value;
+                          },
                           style:
                               TextStyle(color: Color.fromRGBO(255, 69, 69, 1)),
                           keyboardType: TextInputType.number,
@@ -444,7 +451,54 @@ class _findDonorsState extends State<findDonors> {
                     height: 60,
                   ),
                   ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () async {
+                        String patientBlood = "";
+                        String patientGender = "";
+                        String patientRelation = "";
+
+                        // patient Blood
+                        if (_flag1 == true) {
+                          patientBlood = "A+";
+                        } else if (_flag2 == true) {
+                          patientBlood = "A-";
+                        } else if (_flag3 == true) {
+                          patientBlood = "B+";
+                        } else if (_flag4 == true) {
+                          patientBlood = "B-";
+                        } else if (_flag5 == true) {
+                          patientBlood = "AB+";
+                        } else if (_flag6 == true) {
+                          patientBlood = "AB-";
+                        } else if (_flag7 == true) {
+                          patientBlood = "O+";
+                        } else if (_flag8 == true) {
+                          patientBlood = "O-";
+                        }
+
+                        // patient Gender
+                        if (_male == true) {
+                          patientGender = "male";
+                        } else if (_female == true) {
+                          patientGender = "female";
+                        } else {
+                          patientGender = "not mentioned.";
+                        }
+
+                        // patient Relation
+                        if (_family == true) {
+                          patientRelation = "family";
+                        } else if (_friend == true) {
+                          patientRelation = "friend";
+                        } else if (_other == true) {
+                          patientRelation = "other";
+                        } else {
+                          patientRelation = "not mentioned";
+                        }
+
+                        await DatabaseHelper().addrequest(data[0], patientBlood,
+                            patientGender, patientRelation, age, "requested");
+                        Navigator.pop(context);
+                      },
                       style: ButtonStyle(
                           backgroundColor: MaterialStatePropertyAll(
                               Color.fromRGBO(255, 72, 72, 1)),
