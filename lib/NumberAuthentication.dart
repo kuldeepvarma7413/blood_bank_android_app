@@ -1,9 +1,13 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'otpverification.dart';
 
 class NumberAuthentication extends StatelessWidget {
   NumberAuthentication({super.key});
-  String number = "";
+  static String countryCode = "+91";
+  static String verify = "";
+  static String number = "";
+  static String pin = "";
 
   @override
   Widget build(BuildContext context) {
@@ -96,9 +100,25 @@ class NumberAuthentication extends StatelessWidget {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) =>
-                                  otpverification(number: number)));
+                              builder: (context) => otpverification()));
                     },
+                    // onPressed: () async {
+                    //   CircularProgressIndicator();
+                    //   await FirebaseAuth.instance.verifyPhoneNumber(
+                    //     phoneNumber: "${countryCode + number}",
+                    //     verificationCompleted:
+                    //         (PhoneAuthCredential credential) {},
+                    //     verificationFailed: (FirebaseAuthException e) {},
+                    //     codeSent: (String verificationId, int? resendToken) {
+                    //       NumberAuthentication.verify = verificationId;
+                    //       Navigator.push(
+                    //           context,
+                    //           MaterialPageRoute(
+                    //               builder: (context) => otpverification()));
+                    //     },
+                    //     codeAutoRetrievalTimeout: (String verificationId) {},
+                    //   );
+                    // },
                   ),
                 )
               ],

@@ -1,8 +1,21 @@
+import 'package:blood_bank/NumberAuthentication.dart';
+import 'package:blood_bank/database/db_fun.dart';
+import 'package:blood_bank/messages.dart';
+import 'package:blood_bank/requests.dart';
+import 'package:blood_bank/history.dart';
 import 'package:flutter/material.dart';
 
-class Navbar extends StatelessWidget {
-  const Navbar({super.key});
+class Navbar extends StatefulWidget {
+  List<String> data = [];
+  Navbar(this.data);
 
+  @override
+  State<Navbar> createState() => _NavbarState(data);
+}
+
+class _NavbarState extends State<Navbar> {
+  List<String> data = [];
+  _NavbarState(this.data);
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -46,7 +59,10 @@ class Navbar extends StatelessWidget {
                   "Messages",
                   style: TextStyle(fontSize: 18),
                 ),
-                onTap: () {},
+                onTap: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => messages()));
+                },
               ),
               Divider(),
               ListTile(
@@ -55,7 +71,10 @@ class Navbar extends StatelessWidget {
                   color: Color.fromRGBO(255, 72, 72, 1),
                 ),
                 title: Text("Requests", style: TextStyle(fontSize: 18)),
-                onTap: () {},
+                onTap: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => requests(data)));
+                },
               ),
               Divider(),
               ListTile(
@@ -64,7 +83,10 @@ class Navbar extends StatelessWidget {
                   color: Color.fromRGBO(255, 72, 72, 1),
                 ),
                 title: Text("History", style: TextStyle(fontSize: 18)),
-                onTap: () {},
+                onTap: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => history()));
+                },
               ),
               Divider(),
               ListTile(
@@ -82,28 +104,33 @@ class Navbar extends StatelessWidget {
             height: 50,
           ),
           Container(
-            margin: EdgeInsets.all(20),
-            child: TextButton(
-                onPressed: () {},
-                child: Container(
-                  margin: EdgeInsets.all(0),
-                  padding: EdgeInsets.all(20),
-                  decoration: BoxDecoration(
-                      border: Border.all(
-                          width: 1, color: Color.fromRGBO(255, 72, 72, 1)),
-                      borderRadius: BorderRadius.circular(5)),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        "Signout",
-                        style: TextStyle(
-                            color: Color.fromRGBO(255, 72, 72, 1),
-                            fontSize: 18),
-                      ),
-                      Image.asset('images/logout.png')
-                    ],
-                  ),
+            padding: EdgeInsets.all(20),
+            child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    padding: EdgeInsets.all(20),
+                    backgroundColor: Colors.white,
+                    shadowColor: Colors.transparent,
+                    side: BorderSide(
+                      width: 2,
+                      color: Color.fromRGBO(255, 72, 72, 1),
+                    )),
+                onPressed: () {
+                  Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => NumberAuthentication()),
+                      (route) => false);
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "Signout",
+                      style: TextStyle(
+                          fontSize: 18, color: Color.fromRGBO(255, 72, 72, 1)),
+                    ),
+                    Image.asset('images/logout.png')
+                  ],
                 )),
           )
         ],

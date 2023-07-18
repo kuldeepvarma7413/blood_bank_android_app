@@ -1,20 +1,36 @@
+import 'package:blood_bank/findDonors.dart';
+import 'package:blood_bank/requests.dart';
 import 'package:flutter/material.dart';
 import 'Navbar.dart';
+import 'database/db_fun.dart';
 
 class home extends StatefulWidget {
-  const home({super.key});
+  List<String> data;
+  home(this.data);
 
   @override
-  State<home> createState() => _homeState();
+  State<home> createState() => _homeState(data);
 }
 
 class _homeState extends State<home> {
+  List<String> data;
+  String name = "";
+  String bloodGroup = "";
+
+  _homeState(this.data);
+  void initState() {
+    name = data[0];
+    bloodGroup = data[4];
+    //set the initial value of text field
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        drawer: Navbar(),
+        drawer: Navbar(data),
         appBar: AppBar(
           backgroundColor: Color.fromRGBO(255, 72, 72, 1),
           elevation: 0,
@@ -34,7 +50,7 @@ class _homeState extends State<home> {
                       height: 40,
                     ),
                     Text(
-                      "Hello Kuldeep",
+                      "Hello $name",
                       style: TextStyle(
                           color: Colors.white,
                           fontFamily: 'poorStory',
@@ -68,12 +84,12 @@ class _homeState extends State<home> {
                                 children: [
                                   Image(image: AssetImage('images/drop.png')),
                                   Positioned(
-                                    left: 15,
-                                    top: 45,
+                                    left: 20,
+                                    top: 50,
                                     child: Text(
-                                      "A+",
+                                      bloodGroup,
                                       style: TextStyle(
-                                          fontSize: 60,
+                                          fontSize: 45,
                                           color: Colors.white,
                                           fontWeight: FontWeight.w800),
                                     ),
@@ -130,7 +146,12 @@ class _homeState extends State<home> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => findDonors(data)));
+                      },
                       style: ButtonStyle(
                           backgroundColor: MaterialStatePropertyAll(
                               Color.fromRGBO(255, 72, 72, 1)),
@@ -148,7 +169,12 @@ class _homeState extends State<home> {
                     height: 50,
                   ),
                   ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => requests(data)));
+                      },
                       style: ButtonStyle(
                           backgroundColor: MaterialStatePropertyAll(
                               Color.fromRGBO(255, 72, 72, 1)),
