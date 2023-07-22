@@ -131,8 +131,6 @@ class _otpverificationState extends State<otpverification> {
                     onPressed: () async {
                       List<String> data = await DatabaseHelper()
                           .getdata(NumberAuthentication.number);
-                      print(data[0]);
-                      print("done");
                       Navigator.pushAndRemoveUntil(
                           context,
                           MaterialPageRoute(builder: (context) => home(data)),

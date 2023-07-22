@@ -1,18 +1,22 @@
+import 'package:blood_bank/NumberAuthentication.dart';
+import 'package:blood_bank/database/db_fun.dart';
+import 'package:blood_bank/requestAccepted.dart';
+import 'package:blood_bank/requestdetail.dart';
 import 'package:flutter/material.dart';
-
-import 'database/db_fun.dart';
 
 class requests extends StatefulWidget {
   List<String> data;
-  requests(this.data);
+  List<String> users;
+  requests(this.data, this.users);
 
   @override
-  State<requests> createState() => _requestsState(data);
+  State<requests> createState() => _requestsState(data, users);
 }
 
 class _requestsState extends State<requests> {
   List<String> data = [];
-  _requestsState(this.data);
+  List<String> users;
+  _requestsState(this.data, this.users);
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -44,27 +48,21 @@ class _requestsState extends State<requests> {
                 child: SingleChildScrollView(
                     physics: BouncingScrollPhysics(),
                     child: Container(
-                      child: Text("gii"),
+                      // child: Text("gii"),
                       // child: StreamBuilder(builder: builder),
-                      // child: Column(
-                      //   children: getRequests(),
-                      // ),
+                      child: Column(
+                        children: getRequests(context, users),
+                      ),
                     )),
               ),
             )));
   }
 }
 
-List<Widget> getRequests() {
+List<Widget> getRequests(BuildContext context, List<String> requestedusers) {
   // request lists in navbar and then pass here
   // List<String> users = getuser();
-  List<String> users = [
-    "12345",
-    "12344",
-    "123655",
-    "12346",
-    "12348",
-  ];
+  List<String> users = requestedusers;
 
   return users
       .asMap()
@@ -72,6 +70,7 @@ List<Widget> getRequests() {
       .map((e) => Container(
             margin: EdgeInsets.fromLTRB(20, 20, 20, 0),
             child: Container(
+              padding: EdgeInsets.only(bottom: 10),
               decoration: BoxDecoration(
                 border: BorderDirectional(
                     bottom: BorderSide(width: 1.0, color: Colors.grey)),
@@ -85,14 +84,21 @@ List<Widget> getRequests() {
                       Container(
                         padding: EdgeInsets.fromLTRB(7, 0, 0, 0),
                         child: Text(
-                          users[e.key],
+                          "By : ${users[e.key]}",
                           style: TextStyle(
                             fontSize: 20,
                           ),
                         ),
                       ),
                       TextButton(
-                        onPressed: null,
+                        onPressed: () async {
+                          var data = await DatabaseHelper()
+                              .getrequestdata(users[e.key]);
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => RequestDetail(data)));
+                        },
                         child: Text(
                           "View Details",
                           style: TextStyle(
@@ -105,6 +111,8 @@ List<Widget> getRequests() {
                     ],
                   ),
                   Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       TextButton(
                         style: ButtonStyle(
@@ -119,29 +127,40 @@ List<Widget> getRequests() {
                           padding: MaterialStatePropertyAll(
                               EdgeInsets.fromLTRB(30, 5, 30, 5)),
                         ),
-                        onPressed: () {},
+                        onPressed: () async {
+                          var data = await DatabaseHelper()
+                              .getrequestdata(users[e.key]);
+                          if (await DatabaseHelper().isRequestUpdated(data,
+                              users[e.key], NumberAuthentication.number)) {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => RequestAccepted(
+                                        "Thank you for accepting request, You blood can save a life.")));
+                          }
+                        },
                         child: Text(
                           "Accept",
                           style: TextStyle(color: Colors.white),
                         ),
                       ),
-                      TextButton(
-                        style: ButtonStyle(
-                          shape: MaterialStateProperty.all(
-                            RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10.0),
-                              side: BorderSide(width: 1, color: Colors.black),
-                            ),
-                          ),
-                          padding: MaterialStatePropertyAll(
-                              EdgeInsets.fromLTRB(30, 5, 30, 5)),
-                        ),
-                        onPressed: () {},
-                        child: Text(
-                          "Decline",
-                          style: TextStyle(color: Colors.black),
-                        ),
-                      ),
+                      // TextButton(
+                      //   style: ButtonStyle(
+                      //     shape: MaterialStateProperty.all(
+                      //       RoundedRectangleBorder(
+                      //         borderRadius: BorderRadius.circular(10.0),
+                      //         side: BorderSide(width: 1, color: Colors.black),
+                      //       ),
+                      //     ),
+                      //     padding: MaterialStatePropertyAll(
+                      //         EdgeInsets.fromLTRB(30, 5, 30, 5)),
+                      //   ),
+                      //   onPressed: () {},
+                      //   child: Text(
+                      //     "Decline",
+                      //     style: TextStyle(color: Colors.black),
+                      //   ),
+                      // ),
                     ],
                   )
                 ],

@@ -1,3 +1,4 @@
+import 'package:blood_bank/addRequestError.dart';
 import 'package:flutter/material.dart';
 
 import 'database/db_fun.dart';
@@ -495,9 +496,21 @@ class _findDonorsState extends State<findDonors> {
                           patientRelation = "not mentioned";
                         }
 
-                        await DatabaseHelper().addrequest(data[0], patientBlood,
-                            patientGender, patientRelation, age, "requested");
-                        Navigator.pop(context);
+                        if (await DatabaseHelper().addrequest(
+                            data[0],
+                            patientBlood,
+                            patientGender,
+                            patientRelation,
+                            age,
+                            "requested",
+                            data[5])) {
+                          Navigator.pop(context);
+                        } else {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => addRequestError()));
+                        }
                       },
                       style: ButtonStyle(
                           backgroundColor: MaterialStatePropertyAll(

@@ -1,3 +1,4 @@
+import 'package:blood_bank/NumberAuthentication.dart';
 import 'package:blood_bank/findDonors.dart';
 import 'package:blood_bank/requests.dart';
 import 'package:flutter/material.dart';
@@ -169,11 +170,13 @@ class _homeState extends State<home> {
                     height: 50,
                   ),
                   ElevatedButton(
-                      onPressed: () {
+                      onPressed: () async {
+                        List<String> users = await DatabaseHelper()
+                            .getrequestedusers(NumberAuthentication.number);
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => requests(data)));
+                                builder: (context) => requests(data, users)));
                       },
                       style: ButtonStyle(
                           backgroundColor: MaterialStatePropertyAll(

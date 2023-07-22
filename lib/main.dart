@@ -1,6 +1,7 @@
 import 'package:blood_bank/Signup.dart';
 import 'package:blood_bank/findDonors.dart';
 import 'package:blood_bank/home.dart';
+import 'package:blood_bank/requestdetail.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'Screen1.dart';
@@ -31,9 +32,9 @@ void main() async {
   // print();
   // print("hii");
   // List<String> a = await DatabaseHelper().getdata("8003488396");
-  // print(data);
+  // print(a);
   // print(await DatabaseHelper().getrequestedusers());
-  print(DatabaseHelper().getrequestedusers());
+  // print(DatabaseHelper().getrequestedusers());
 
   runApp(MaterialApp(
     home: MyApp(),
@@ -52,6 +53,7 @@ class MyApp extends StatelessWidget {
       controller: controller,
       scrollDirection: Axis.horizontal,
       children: [
+        // RequestDetail()
         // signup(),
         // home(data),
         // Screen1(),

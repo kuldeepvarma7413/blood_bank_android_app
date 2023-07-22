@@ -35,11 +35,11 @@ class _NavbarState extends State<Navbar> {
                   height: 120,
                 ),
                 Text(
-                  "Donor #32457",
+                  "${data[0]}",
                   style: TextStyle(fontFamily: 'poorStory', fontSize: 24),
                 ),
                 Text(
-                  "Donor Status : Approved",
+                  "${data[5]}",
                   style: TextStyle(fontSize: 16),
                 ),
               ],
@@ -71,9 +71,13 @@ class _NavbarState extends State<Navbar> {
                   color: Color.fromRGBO(255, 72, 72, 1),
                 ),
                 title: Text("Requests", style: TextStyle(fontSize: 18)),
-                onTap: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => requests(data)));
+                onTap: () async {
+                  List<String> users = await DatabaseHelper()
+                      .getrequestedusers(NumberAuthentication.number);
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => requests(data, users)));
                 },
               ),
               Divider(),

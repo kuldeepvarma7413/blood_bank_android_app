@@ -212,7 +212,7 @@ class _signupState extends State<signup> {
                           ),
                           dropdownColor: Color.fromRGBO(255, 69, 69, 1),
                           // Initial Value
-                          value: items[0],
+                          value: dropdownvalue,
 
                           // Down Arrow Icon
                           icon: const Icon(null),

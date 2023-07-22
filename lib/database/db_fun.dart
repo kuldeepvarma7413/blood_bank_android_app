@@ -1,11 +1,9 @@
-import 'dart:math';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class DatabaseHelper {
   static FirebaseFirestore db = FirebaseFirestore.instance;
 
-//returning user data working fine
+//returning user data
   Future<List<String>> getdata(String number) async {
     try {
       List<String> info = [];
@@ -22,6 +20,55 @@ class DatabaseHelper {
       return info;
     } catch (e) {
       return [];
+    }
+  }
+
+//returning request data
+  Future<List<String>> getrequestdata(String number) async {
+    try {
+      List<String> info = [];
+      var data = await db
+          .collection("requests")
+          .where("number", isEqualTo: number)
+          .get();
+      data.docs.forEach((element) {
+        info.add(element['name']);
+        info.add(element['patientBlood']);
+        info.add(element['patientAge']);
+        info.add(element['patientGender']);
+        info.add(element['patientRelation']);
+        info.add(element['number']);
+      });
+      return info;
+    } catch (e) {
+      return [];
+    }
+  }
+
+//  update request after acceptance
+  Future<bool> isRequestUpdated(
+      List<String> data, String number1, String number2) async {
+    try {
+      var id = "";
+      await db
+          .collection('requests')
+          .where("number", isEqualTo: number1)
+          .get()
+          .then(
+            (QuerySnapshot snapshot) => {
+              snapshot.docs.forEach((f) {
+                id = f.reference.id;
+              }),
+            },
+          );
+      db
+          .collection("requests")
+          .doc(id)
+          .update({"status": "accepted", "acceptedBy": number2}).onError(
+              (error, stackTrace) => print("Error"));
+      return true;
+    } catch (e) {
+      return false;
     }
   }
 
@@ -65,8 +112,14 @@ class DatabaseHelper {
   }
 
   // add request for blood
-  bool addrequest(String user, String patientBlood, String patientGender,
-      String PatientRelation, String PatientAge, String status) {
+  Future<bool> addrequest(
+      String user,
+      String patientBlood,
+      String patientGender,
+      String PatientRelation,
+      String PatientAge,
+      String status,
+      String number) async {
     try {
       final request = {
         "name": user,
@@ -74,32 +127,75 @@ class DatabaseHelper {
         "patientGender": patientGender,
         "patientRelation": PatientRelation,
         "patientAge": PatientAge,
-        "status": status
+        "status": status,
+        "number": number,
+        "acceptedBy": ""
       };
-      db
-          .collection("requests")
-          .doc()
-          .set(request)
-          .onError((error, stackTrace) => print("Error"));
-      return true;
+      if (await isRequestAlreadyExist(number)) {
+        return false;
+      } else {
+        db
+            .collection("requests")
+            .doc()
+            .set(request)
+            .onError((error, stackTrace) => print("Error"));
+        return true;
+      }
     } catch (e) {
       return false;
     }
   }
 
-  // return all users who have requested to donate except accepted requests
-  Stream<List<String>> getrequestedusers() {
-    var data =
-        db.collection("requests").where("status", isEqualTo: "requested").get();
-    return data as Stream<List<String>>;
+  // get mobile number to check request existance to avoid multiple request from one user
+  Future<bool> isRequestAlreadyExist(String number) async {
+    try {
+      var data = await db
+          .collection("requests")
+          .where("number", isEqualTo: number)
+          .get();
+      if (data.docs.length > 0) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      return false;
+    }
   }
 
-  // void getDetails() async {
-  //   var colloctiondata = await db.collection('users').get();
-  //   print(colloctiondata.docs);
-  //   for (var element in colloctiondata.docs) {
-  //     var data = element.data();
-  //     print(data['number']);
-  //   }
-  // }
+// return contact number of all requested users
+  Future<List<String>> getrequestedusers(String number) async {
+    try {
+      List<String> info = [];
+      var data = await db
+          .collection("requests")
+          .where("status", isEqualTo: "requested")
+          .get();
+      data.docs.forEach((element) {
+        if (element['number'] != number) {
+          info.add(element['number']);
+        }
+      });
+      return info;
+    } catch (e) {
+      return [];
+    }
+  }
+
+  // delete existing request of logged in user
+  void deleteCurrentRequest(String number) async {
+    var id = "";
+    await db
+        .collection('requests')
+        .where("number", isEqualTo: number)
+        .get()
+        .then(
+          (QuerySnapshot snapshot) => {
+            snapshot.docs.forEach((f) {
+              id = f.reference.id;
+            }),
+          },
+        );
+    await db.collection("requests").doc(id).delete();
+  }
 }
