@@ -1,226 +1,381 @@
+import 'package:blood_bank/NumberAuthentication.dart';
+import 'package:blood_bank/messaging.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
-class history extends StatefulWidget {
-  const history({super.key});
-
-  @override
-  State<history> createState() => _historyState();
-}
-
-class _historyState extends State<history> {
-  bool _flag1 = true;
-  bool _flag2 = false;
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-        home: Scaffold(
-            appBar: AppBar(
-              centerTitle: true,
-              title: Text(
-                "History",
-                style: TextStyle(fontFamily: 'poorStory', fontSize: 26),
-              ),
-              leading: TextButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: Icon(
-                    Icons.arrow_back,
-                    color: Colors.white,
-                  )),
-              toolbarHeight: 80,
-              backgroundColor: Color.fromRGBO(255, 72, 72, 1),
-              shadowColor: Colors.transparent,
-            ),
-            body: DefaultTextStyle(
-              style: TextStyle(
-                  fontWeight: FontWeight.w500,
-                  color: Colors.black,
-                  fontSize: 16),
-              child: SafeArea(
-                child: SingleChildScrollView(
-                  physics: BouncingScrollPhysics(),
-                  child: Container(
-                    child: Column(children: [
-                      Container(
-                        margin: EdgeInsets.fromLTRB(15, 20, 15, 0),
-                        padding: EdgeInsets.fromLTRB(0, 0, 0, 20),
-                        decoration: BoxDecoration(
-                            border: BorderDirectional(
-                                bottom: BorderSide(
-                                    width: 2,
-                                    color: Color.fromRGBO(255, 72, 72, 1)))),
-                        child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              ElevatedButton(
-                                onPressed: () {
-                                  setState(() {
-                                    _flag1 = !_flag1;
-                                    _flag2 = false;
-                                  });
-                                },
-                                child: Text("Donated",
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.w400)),
-                                style: ElevatedButton.styleFrom(
-                                    shape: RoundedRectangleBorder(
-                                        side: BorderSide(
-                                            width: 1,
-                                            color: Color.fromRGBO(
-                                                255, 72, 72, 1))),
-                                    foregroundColor:
-                                        _flag1 ? Colors.white : Colors.black,
-                                    backgroundColor: _flag1
-                                        ? Color.fromRGBO(255, 72, 72, 1)
-                                        : Colors
-                                            .white, // This is what you need!
-                                    padding:
-                                        EdgeInsets.fromLTRB(60, 10, 60, 10)),
-                              ),
-                              ElevatedButton(
-                                onPressed: () {
-                                  setState(() {
-                                    _flag1 = false;
-                                    _flag2 = !_flag2;
-                                  });
-                                },
-                                child: Text(
-                                  "Received",
-                                  style: TextStyle(fontWeight: FontWeight.w400),
-                                ),
-                                style: ElevatedButton.styleFrom(
-                                    shape: RoundedRectangleBorder(
-                                        side: BorderSide(
-                                            width: 1,
-                                            color: Color.fromRGBO(
-                                                255, 72, 72, 1))),
-                                    foregroundColor:
-                                        _flag2 ? Colors.white : Colors.black,
-                                    backgroundColor: _flag2
-                                        ? Color.fromRGBO(255, 72, 72, 1)
-                                        : Colors.white,
-                                    // This is what you need!
-                                    padding:
-                                        EdgeInsets.fromLTRB(60, 10, 60, 10)),
-                              ),
-                            ]),
-                      )
-                      // asdfghjkl
-                      ,
-                      Column(
-                        children: getRequests(),
-                      ),
-                    ]),
-                  ),
-                ),
-              ),
-            )));
+String formatTime(String timestamp) {
+  final date = DateTime.fromMillisecondsSinceEpoch(int.parse(timestamp));
+  final now = DateTime.now();
+  final diff = now.difference(date);
+  if (diff.inDays == 0) {
+    return DateFormat('yyyy-MM-dd kk:mm').format(date);
+  } else {
+    return DateFormat('dd/MM HH:mm').format(date);
   }
 }
 
-List<Widget> getRequests() {
-  List<String> date = [
-    "11/12/18",
-    "12/12/18",
-    "13/12/18",
-    "14/12/18",
-    "15/12/18",
-    "16/12/18",
-    "17/12/18",
-    "18/12/18"
-  ];
-  List<String> locations = [
-    "ludhiana",
-    "ludhiana",
-    "ludhiana",
-    "ludhiana",
-    "ludhiana",
-    "ludhiana",
-    "ludhiana",
-    "ludhiana"
-  ];
-  List<String> receivers = [
-    "1265",
-    "1245",
-    "1267",
-    "1264",
-    "1295",
-    "1212",
-    "1232",
-    "1248"
-  ];
-  List<String> quantity = [
-    "0.6",
-    "0.6",
-    "0.6",
-    "0.6",
-    "0.6",
-    "0.6",
-    "0.6",
-    "0.6"
-  ];
+// ignore: camel_case_types
+class history extends StatefulWidget {
+  String? number;
+  history(this.number);
 
-  return date
-      .asMap()
-      .entries
-      .map((e) => Container(
-            margin: EdgeInsets.fromLTRB(20, 20, 20, 0),
-            child: Container(
-              decoration: BoxDecoration(
-                border: BorderDirectional(
-                    bottom: BorderSide(width: 1.0, color: Colors.grey)),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        padding: EdgeInsets.fromLTRB(7, 0, 0, 0),
-                        child: Text(
-                          "Date : " + date[e.key],
-                          style: TextStyle(
-                            fontSize: 14,
+  @override
+  State<history> createState() => _historyState(number);
+}
+
+// ignore: camel_case_types
+class _historyState extends State<history> {
+  String tab = "donate";
+  String? number;
+  _historyState(this.number);
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        title: const Text(
+          "History",
+          style: TextStyle(fontFamily: 'poorStory', fontSize: 26),
+        ),
+        leading: TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: const Icon(
+              Icons.arrow_back,
+              color: Colors.white,
+            )),
+        toolbarHeight: 80,
+        backgroundColor: const Color.fromRGBO(255, 72, 72, 1),
+        shadowColor: Colors.transparent,
+      ),
+      body: Container(
+          color: Colors.grey[200],
+          child: Column(
+            children: [
+              Container(
+                height: 40,
+                // button to switch between donate and receive
+                margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            tab = 'donate';
+                          });
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(5),
+                            color: tab == 'donate'
+                                ? const Color(0xffFA4848)
+                                : Colors.white,
+                          ),
+                          child: Center(
+                            child: Text(
+                              'Donated',
+                              style: TextStyle(
+                                color: tab == 'donate'
+                                    ? Colors.white
+                                    : Colors.black,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
                           ),
                         ),
                       ),
-                      TextButton(
-                        onPressed: null,
-                        child: Text(
-                          "Location : " + locations[e.key],
-                          style: TextStyle(
-                              fontWeight: FontWeight.w400, fontSize: 14),
-                        ),
-                      )
-                    ],
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      Container(
-                        padding: EdgeInsets.fromLTRB(0, 0, 7, 0),
-                        child: Text(
-                          "Receiver ID : #" + receivers[e.key],
-                          style: TextStyle(
-                            fontSize: 14,
+                    ),
+                    const SizedBox(width: 16),
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            tab = 'receive';
+                          });
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(5),
+                            color: tab == 'receive'
+                                ? const Color(0xffFA4848)
+                                : Colors.white,
+                          ),
+                          child: Center(
+                            child: Text(
+                              'Received',
+                              style: TextStyle(
+                                color: tab == 'receive'
+                                    ? Colors.white
+                                    : Colors.black,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
                           ),
                         ),
                       ),
-                      TextButton(
-                        onPressed: null,
-                        child: Text(
-                          "Qty : " + quantity[e.key] + "ounces",
-                          style: TextStyle(
-                              fontWeight: FontWeight.w400, fontSize: 14),
-                        ),
-                      )
-                    ],
-                  ),
-                ],
+                    ),
+                  ],
+                ),
               ),
+
+              // list
+              Expanded(
+                child: tab == 'donate'
+                    ? _buildDonatedList(number)
+                    : _buildReceivedList(number),
+              ),
+            ],
+          )),
+    );
+  }
+}
+
+Widget _buildReceivedList(String? number) {
+  // for each collection in requests, fetch the requests and show them in a list where donor id is current user id
+  final FirebaseFirestore firestore = FirebaseFirestore.instance;
+  return StreamBuilder(
+      stream: firestore
+          .collection("requests")
+          .where("requested_by", isEqualTo: number)
+          .where("status", isEqualTo: "accepted")
+          .snapshots(),
+      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+        if (snapshot.hasError) {
+          return const Center(
+            child: Text("Something went wrong"),
+          );
+        }
+
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(
+            child: CircularProgressIndicator(
+              color: Colors.redAccent,
             ),
-          ))
-      .toList();
+          );
+        }
+
+        // ignore: prefer_is_empty
+        if (snapshot.data!.docs.length == 0) {
+          return const Center(
+              child: Text(
+            "No Received history found!",
+            style: TextStyle(fontWeight: FontWeight.w500),
+          ));
+        }
+
+        return ListView.builder(
+          itemCount: snapshot.data!.docs.length,
+          itemBuilder: (context, index) {
+            Map<String, dynamic> item =
+                snapshot.data!.docs[index].data() as Map<String, dynamic>;
+            return getReceiveItem(context, item, number);
+          },
+        );
+      });
+}
+
+Widget _buildDonatedList(String? number) {
+  final FirebaseFirestore firestore = FirebaseFirestore.instance;
+  return StreamBuilder(
+    stream: firestore
+        .collection("requests")
+        .where("donor", isEqualTo: number)
+        .snapshots(),
+    builder: (BuildContext context, AsyncSnapshot snapshot) {
+      if (snapshot.hasError) {
+        return const Center(
+          child: Text("Something went wrong"),
+        );
+      }
+
+      if (snapshot.connectionState == ConnectionState.waiting) {
+        return const Center(
+          child: CircularProgressIndicator(
+            color: Colors.redAccent,
+          ),
+        );
+      }
+
+      if (snapshot.data!.docs.length == 0) {
+        return const Center(
+            child: Text(
+          "No donated history found!",
+          style: TextStyle(fontWeight: FontWeight.w500),
+        ));
+      }
+
+      return ListView.builder(
+        itemCount: snapshot.data!.docs.length,
+        itemBuilder: (context, index) {
+          // get the request details
+          Map<String, dynamic> request =
+              snapshot.data!.docs[index].data() as Map<String, dynamic>;
+          return getDonateItem(context, request, number);
+        },
+      );
+    },
+  );
+}
+
+Widget getDonateItem(
+    BuildContext context, Map<String, dynamic> request, String? number) {
+  // return a container having date and location at the left side of card, receiver id and qty at the right side of card
+  return InkWell(
+    onTap: () => Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => messaging(request['number'], number),
+      ),
+    ),
+    child: Container(
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 1),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(5),
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.2),
+            spreadRadius: 1,
+            blurRadius: 2,
+            offset: const Offset(0, 1),
+          ),
+        ],
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Date : ${formatTime(request['createdAt'])}',
+                style: const TextStyle(
+                  color: Colors.black,
+                  fontSize: 16,
+                ),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              const Text(
+                'Location : 123, XYZ Apt',
+                style: TextStyle(
+                  color: Colors.grey,
+                  fontSize: 14,
+                ),
+              ),
+            ],
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Text(
+                'To ${request['number'].substring(0, 10)}',
+                style: const TextStyle(
+                  color: Colors.black,
+                  fontSize: 16,
+                ),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              Text(
+                'Qty: ${request['qty']}ml',
+                style: TextStyle(
+                  color: Colors.grey[600],
+                  fontSize: 14,
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    ),
+  );
+}
+
+Widget getReceiveItem(
+    BuildContext context, Map<String, dynamic> data, String? number) {
+  // return a container having date and location at the left side of card, receiver id and qty and view details at the right side of card
+  return InkWell(
+    onTap: () => Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => messaging(data['donor'], number),
+      ),
+    ),
+    child: Container(
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 1),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(5),
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.2),
+            spreadRadius: 1,
+            blurRadius: 2,
+            offset: const Offset(0, 1),
+          ),
+        ],
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Date : ${formatTime(data['createdAt'])}',
+                style: const TextStyle(
+                  color: Colors.black,
+                  fontSize: 16,
+                ),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              const Text(
+                'Location : 123, XYZ Apt',
+                style: TextStyle(
+                  color: Colors.grey,
+                  fontSize: 14,
+                ),
+              ),
+            ],
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Text(
+                'By ${data['donor'].substring(0, 10)}',
+                style: const TextStyle(
+                  color: Colors.black,
+                  fontSize: 16,
+                ),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              Text(
+                'Qty: 0.${data['qty']}ml',
+                style: TextStyle(
+                  color: Colors.grey[600],
+                  fontSize: 14,
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    ),
+  );
 }

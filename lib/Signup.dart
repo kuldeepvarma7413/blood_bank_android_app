@@ -1,9 +1,11 @@
+// ignore: file_names
 import 'package:blood_bank/database/db_fun.dart';
 import 'package:blood_bank/home.dart';
 import 'package:flutter/material.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
 import 'NumberAuthentication.dart';
 
+// ignore: camel_case_types
 class signup extends StatefulWidget {
   const signup({super.key});
 
@@ -11,6 +13,7 @@ class signup extends StatefulWidget {
   State<signup> createState() => _signupState();
 }
 
+// ignore: camel_case_types
 class _signupState extends State<signup> {
   TextEditingController dateinput = TextEditingController();
   @override
@@ -46,44 +49,45 @@ class _signupState extends State<signup> {
         home: Scaffold(
           body: SafeArea(
             child: DefaultTextStyle(
-              style: TextStyle(color: Colors.white, fontFamily: 'poorStory'),
+              style:
+                  const TextStyle(color: Colors.white, fontFamily: 'poorStory'),
               child: SingleChildScrollView(
-                physics: BouncingScrollPhysics(),
+                physics: const BouncingScrollPhysics(),
                 child: Container(
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     gradient: LinearGradient(
                       colors: [
-                        const Color.fromRGBO(250, 72, 72, 1),
+                        Color.fromRGBO(250, 72, 72, 1),
                         Color.fromRGBO(255, 69, 69, 1)
                       ],
                     ),
                   ),
                   width: MediaQuery.of(context).size.width,
                   height: MediaQuery.of(context).size.height,
-                  padding: EdgeInsets.fromLTRB(25, 60, 25, 10),
+                  padding: const EdgeInsets.fromLTRB(25, 60, 25, 10),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
+                      const Text(
                         "Sign Up",
                         style: TextStyle(
                           fontSize: 40,
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 40,
                       ),
 
                       // full name
-                      Text(
+                      const Text(
                         "Full Name",
                         style: TextStyle(fontSize: 20),
                       ),
                       TextField(
                         cursorColor: Colors.white,
-                        style: TextStyle(color: Colors.white),
-                        decoration: InputDecoration(
+                        style: const TextStyle(color: Colors.white),
+                        decoration: const InputDecoration(
                             fillColor: Color.fromRGBO(255, 69, 69, 1),
                             filled: true,
                             focusColor: Colors.blueAccent,
@@ -99,18 +103,18 @@ class _signupState extends State<signup> {
                       ),
 
                       // Date of Birth
-                      SizedBox(
+                      const SizedBox(
                         height: 25,
                       ),
-                      Text(
+                      const Text(
                         "Date of Birth",
                         style: TextStyle(fontSize: 20),
                       ),
                       TextField(
                           controller: dateinput,
                           cursorColor: Colors.white,
-                          style: TextStyle(color: Colors.white),
-                          decoration: InputDecoration(
+                          style: const TextStyle(color: Colors.white),
+                          decoration: const InputDecoration(
                               fillColor: Color.fromRGBO(255, 69, 69, 1),
                               filled: true,
                               enabledBorder: UnderlineInputBorder(
@@ -128,7 +132,6 @@ class _signupState extends State<signup> {
                                 lastDate: DateTime.now());
 
                             if (pickedDate != null) {
-                              print(pickedDate);
                               String formattedDate = pickedDate.toString();
                               setState(() {
                                 dateinput.text =
@@ -138,18 +141,18 @@ class _signupState extends State<signup> {
                           }),
 
                       // Age
-                      SizedBox(
+                      const SizedBox(
                         height: 25,
                       ),
-                      Text(
+                      const Text(
                         "Age",
                         style: TextStyle(fontSize: 20),
                       ),
                       TextField(
                         cursorColor: Colors.white,
-                        style: TextStyle(color: Colors.white),
+                        style: const TextStyle(color: Colors.white),
                         keyboardType: TextInputType.number,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                             fillColor: Color.fromRGBO(255, 69, 69, 1),
                             filled: true,
                             focusColor: Colors.blueAccent,
@@ -165,17 +168,17 @@ class _signupState extends State<signup> {
                       ),
 
                       // Health conditions
-                      SizedBox(
+                      const SizedBox(
                         height: 25,
                       ),
-                      Text(
+                      const Text(
                         "Prevailing Health Conditions",
                         style: TextStyle(fontSize: 20),
                       ),
                       TextField(
                         cursorColor: Colors.white,
-                        style: TextStyle(color: Colors.white),
-                        decoration: InputDecoration(
+                        style: const TextStyle(color: Colors.white),
+                        decoration: const InputDecoration(
                             fillColor: Color.fromRGBO(255, 69, 69, 1),
                             filled: true,
                             focusColor: Colors.blueAccent,
@@ -191,17 +194,17 @@ class _signupState extends State<signup> {
                       ),
 
                       // Blood Group
-                      SizedBox(
+                      const SizedBox(
                         height: 25,
                       ),
-                      Text(
+                      const Text(
                         "Blood Group",
                         style: TextStyle(fontSize: 20),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 20,
                       ),
-                      Container(
+                      SizedBox(
                         width: MediaQuery.of(context).size.width,
                         child: DropdownButton(
                           style: const TextStyle(
@@ -210,9 +213,9 @@ class _signupState extends State<signup> {
                             height: 1,
                             color: Colors.white,
                           ),
-                          dropdownColor: Color.fromRGBO(255, 69, 69, 1),
+                          dropdownColor: const Color.fromRGBO(255, 69, 69, 1),
                           // Initial Value
-                          value: items[0],
+                          value: dropdownvalue,
 
                           // Down Arrow Icon
                           icon: const Icon(null),
@@ -235,7 +238,7 @@ class _signupState extends State<signup> {
                       ),
 
                       // button
-                      SizedBox(
+                      const SizedBox(
                         height: 50,
                       ),
                       Container(
@@ -245,28 +248,37 @@ class _signupState extends State<signup> {
                           style: ElevatedButton.styleFrom(
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(10)),
-                              foregroundColor: Color.fromRGBO(255, 69, 69, 1),
+                              foregroundColor:
+                                  const Color.fromRGBO(255, 69, 69, 1),
                               backgroundColor: Colors.white,
-                              padding: EdgeInsets.fromLTRB(50, 15, 50, 15)),
-                          child: Text(
+                              padding:
+                                  const EdgeInsets.fromLTRB(50, 15, 50, 15)),
+                          child: const Text(
                             "REGISTER FOR CHECKUP",
                             style: TextStyle(
                                 fontFamily: 'poorStory', fontSize: 20),
                           ),
                           onPressed: () async {
-                            if (await DatabaseHelper().addUser(
+                            if (DatabaseHelper().addUser(
                                 age,
                                 dropdownvalue,
                                 dateinput.text,
                                 healthCondition,
                                 name,
                                 number)) {
+                              SharedPreferences pref =
+                                  await SharedPreferences.getInstance();
+                              pref.setString(
+                                  'number', NumberAuthentication.number);
+                              pref.setBool('loggedIn', true);
                               List<String> data =
                                   await DatabaseHelper().getdata(number);
+                              // ignore: use_build_context_synchronously
                               Navigator.pushAndRemoveUntil(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => home(data)),
+                                      builder: (context) => home(
+                                          data, NumberAuthentication.number)),
                                   (route) => false);
                             }
                           },

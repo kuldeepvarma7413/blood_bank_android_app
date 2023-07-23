@@ -5,18 +5,18 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "blood_bank",
+            "name": "blood bank",
             "request": "launch",
             "type": "dart"
         },
         {
-            "name": "blood_bank (profile mode)",
+            "name": "blood bank (profile mode)",
             "request": "launch",
             "type": "dart",
             "flutterMode": "profile"
         },
         {
-            "name": "blood_bank (release mode)",
+            "name": "blood bank (release mode)",
             "request": "launch",
             "type": "dart",
             "flutterMode": "release"

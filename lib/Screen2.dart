@@ -1,3 +1,4 @@
+// ignore: file_names
 import 'package:flutter/material.dart';
 
 class Screen2 extends StatelessWidget {
@@ -11,9 +12,9 @@ class Screen2 extends StatelessWidget {
         resizeToAvoidBottomInset: false,
         body: (SafeArea(
           child: Container(
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
                 gradient: LinearGradient(colors: [
-              const Color.fromRGBO(250, 72, 72, 1),
+              Color.fromRGBO(250, 72, 72, 1),
               Color.fromRGBO(255, 69, 69, 1)
             ], begin: Alignment.topCenter, end: Alignment.bottomCenter)),
             alignment: Alignment.center,
@@ -31,9 +32,9 @@ class Screen2 extends StatelessWidget {
                   ),
                 ),
                 Container(
-                  margin: EdgeInsets.fromLTRB(0, 100, 0, 0),
+                  margin: const EdgeInsets.fromLTRB(0, 100, 0, 0),
                   width: 270,
-                  child: Text(
+                  child: const Text(
                     "To be a responsible donor, you must get a check-up.",
                     style: TextStyle(
                         fontSize: 20,
