@@ -1,3 +1,4 @@
+// ignore: file_names
 import 'package:flutter/material.dart';
 
 class Screen4 extends StatelessWidget {
@@ -11,9 +12,9 @@ class Screen4 extends StatelessWidget {
         resizeToAvoidBottomInset: false,
         body: (SafeArea(
           child: Container(
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
                 gradient: LinearGradient(colors: [
-              const Color.fromRGBO(250, 72, 72, 1),
+              Color.fromRGBO(250, 72, 72, 1),
               Color.fromRGBO(255, 69, 69, 1)
             ], begin: Alignment.topCenter, end: Alignment.bottomCenter)),
             alignment: Alignment.center,
@@ -23,7 +24,7 @@ class Screen4 extends StatelessWidget {
               children: [
                 Container(
                   height: 450,
-                  margin: EdgeInsets.all(0),
+                  margin: const EdgeInsets.all(0),
                   alignment: Alignment.bottomRight,
                   child: Image.asset(
                     'images/blood-bag.png',
@@ -32,8 +33,8 @@ class Screen4 extends StatelessWidget {
                   ),
                 ),
                 Container(
-                  margin: EdgeInsets.fromLTRB(0, 100, 0, 0),
-                  child: Text(
+                  margin: const EdgeInsets.fromLTRB(0, 100, 0, 0),
+                  child: const Text(
                     "Donate your blood and save a life.",
                     style: TextStyle(
                         fontSize: 20,

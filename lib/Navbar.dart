@@ -1,32 +1,39 @@
+// ignore: file_names
 import 'package:blood_bank/NumberAuthentication.dart';
+import 'package:blood_bank/SettingScreen.dart';
 import 'package:blood_bank/database/db_fun.dart';
 import 'package:blood_bank/messages.dart';
 import 'package:blood_bank/requests.dart';
 import 'package:blood_bank/history.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
+// ignore: must_be_immutable
 class Navbar extends StatefulWidget {
   List<String> data = [];
-  Navbar(this.data);
+  String? number;
+  Navbar(this.data, this.number);
 
   @override
-  State<Navbar> createState() => _NavbarState(data);
+  // ignore: no_logic_in_create_state
+  State<Navbar> createState() => _NavbarState(data, number);
 }
 
 class _NavbarState extends State<Navbar> {
   List<String> data = [];
-  _NavbarState(this.data);
+  String? number;
+  _NavbarState(this.data, this.number);
   @override
   Widget build(BuildContext context) {
     return Drawer(
       child: ListView(
         children: [
           Container(
-            color: Color.fromRGBO(255, 118, 118, 1),
-            padding: EdgeInsets.all(20),
+            color: const Color.fromRGBO(255, 118, 118, 1),
+            padding: const EdgeInsets.all(20),
             child: Column(
               children: [
-                SizedBox(
+                const SizedBox(
                   height: 30,
                 ),
                 Image.asset(
@@ -35,100 +42,122 @@ class _NavbarState extends State<Navbar> {
                   height: 120,
                 ),
                 Text(
-                  "${data[0]}",
-                  style: TextStyle(fontFamily: 'poorStory', fontSize: 24),
+                  data[0],
+                  style: const TextStyle(fontFamily: 'poorStory', fontSize: 24),
                 ),
                 Text(
-                  "${data[5]}",
-                  style: TextStyle(fontSize: 16),
+                  data[5],
+                  style: const TextStyle(fontSize: 16),
                 ),
               ],
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 20,
           ),
           Column(
             children: [
               ListTile(
-                trailing: Icon(
+                trailing: const Icon(
                   Icons.arrow_forward,
                   color: Color.fromRGBO(255, 72, 72, 1),
                 ),
-                title: Text(
+                title: const Text(
                   "Messages",
                   style: TextStyle(fontSize: 18),
                 ),
                 onTap: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => messages()));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => messages(number)));
                 },
               ),
-              Divider(),
+              const Divider(),
               ListTile(
-                trailing: Icon(
+                trailing: const Icon(
                   Icons.arrow_forward,
                   color: Color.fromRGBO(255, 72, 72, 1),
                 ),
-                title: Text("Requests", style: TextStyle(fontSize: 18)),
+                title: const Text("Requests", style: TextStyle(fontSize: 18)),
                 onTap: () async {
+                  SharedPreferences pref =
+                      await SharedPreferences.getInstance();
                   List<String> users = await DatabaseHelper()
-                      .getrequestedusers(NumberAuthentication.number);
+                      .getrequestedusers(pref.getString('number'));
+                  // ignore: use_build_context_synchronously
                   Navigator.push(
                       context,
                       MaterialPageRoute(
                           builder: (context) => requests(data, users)));
                 },
               ),
-              Divider(),
+              const Divider(),
               ListTile(
-                trailing: Icon(
+                trailing: const Icon(
                   Icons.arrow_forward,
                   color: Color.fromRGBO(255, 72, 72, 1),
                 ),
-                title: Text("History", style: TextStyle(fontSize: 18)),
-                onTap: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => history()));
+                title: const Text("History", style: TextStyle(fontSize: 18)),
+                onTap: () async {
+                  SharedPreferences pref =
+                      await SharedPreferences.getInstance();
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              history(pref.getString('number'))));
                 },
               ),
-              Divider(),
+              const Divider(),
               ListTile(
-                trailing: Icon(
+                trailing: const Icon(
                   Icons.arrow_forward,
                   color: Color.fromRGBO(255, 72, 72, 1),
                 ),
-                title: Text("Settings", style: TextStyle(fontSize: 18)),
-                onTap: () {},
+                title: const Text("Settings", style: TextStyle(fontSize: 18)),
+                onTap: () async {
+                  List<String> data1 = await DatabaseHelper().getdata(data[5]);
+                  // ignore: use_build_context_synchronously
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => SettingsScreen(data1)));
+                },
               ),
-              Divider(),
+              const Divider(),
             ],
           ),
-          SizedBox(
+          const SizedBox(
             height: 50,
           ),
           Container(
-            padding: EdgeInsets.all(20),
+            padding: const EdgeInsets.all(20),
             child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                    padding: EdgeInsets.all(20),
+                    padding: const EdgeInsets.all(20),
                     backgroundColor: Colors.white,
                     shadowColor: Colors.transparent,
-                    side: BorderSide(
+                    side: const BorderSide(
                       width: 2,
                       color: Color.fromRGBO(255, 72, 72, 1),
                     )),
-                onPressed: () {
+                onPressed: () async {
+                  SharedPreferences pref =
+                      await SharedPreferences.getInstance();
+                  pref.remove('number');
+                  pref.setBool('loggedIn', false);
+                  // ignore: use_build_context_synchronously
                   Navigator.pushAndRemoveUntil(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => NumberAuthentication()),
+                          builder: (context) => const NumberAuthentication()),
                       (route) => false);
                 },
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
+                    const Text(
                       "Signout",
                       style: TextStyle(
                           fontSize: 18, color: Color.fromRGBO(255, 72, 72, 1)),

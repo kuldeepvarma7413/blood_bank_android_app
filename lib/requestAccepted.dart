@@ -1,8 +1,10 @@
+// ignore: file_names
 import 'package:flutter/material.dart';
 
+// ignore: must_be_immutable
 class RequestAccepted extends StatelessWidget {
   String text = "";
-  RequestAccepted(this.text);
+  RequestAccepted(this.text, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -10,7 +12,7 @@ class RequestAccepted extends StatelessWidget {
       home: Scaffold(
         appBar: AppBar(
           centerTitle: true,
-          title: Text(
+          title: const Text(
             "Request Detail",
             style: TextStyle(fontFamily: 'poorStory', fontSize: 26),
           ),
@@ -18,12 +20,12 @@ class RequestAccepted extends StatelessWidget {
               onPressed: () {
                 Navigator.pop(context);
               },
-              child: Icon(
+              child: const Icon(
                 Icons.arrow_back,
                 color: Colors.white,
               )),
           toolbarHeight: 80,
-          backgroundColor: Color.fromRGBO(255, 72, 72, 1),
+          backgroundColor: const Color.fromRGBO(255, 72, 72, 1),
           shadowColor: Colors.transparent,
         ),
         body: SafeArea(
@@ -33,11 +35,11 @@ class RequestAccepted extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
           child: Column(
             children: [
-              SizedBox(
+              const SizedBox(
                 height: 150,
               ),
               Text(text),
-              SizedBox(
+              const SizedBox(
                 height: 50,
               ),
               ElevatedButton(
@@ -45,11 +47,11 @@ class RequestAccepted extends StatelessWidget {
                   Navigator.pop(context);
                   Navigator.pop(context);
                 },
-                child: Text("Back"),
                 style: ElevatedButton.styleFrom(
-                    backgroundColor: Color.fromRGBO(255, 72, 72, 1),
-                    padding:
-                        EdgeInsets.symmetric(vertical: 12, horizontal: 50)),
+                    backgroundColor: const Color.fromRGBO(255, 72, 72, 1),
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 12, horizontal: 50)),
+                child: const Text("Back"),
               ),
             ],
           ),

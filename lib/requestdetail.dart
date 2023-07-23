@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 
+// ignore: must_be_immutable
 class RequestDetail extends StatelessWidget {
   List<String> data;
-  RequestDetail(this.data);
+  RequestDetail(this.data, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -10,7 +11,7 @@ class RequestDetail extends StatelessWidget {
       home: Scaffold(
         appBar: AppBar(
           centerTitle: true,
-          title: Text(
+          title: const Text(
             "Request Detail",
             style: TextStyle(fontFamily: 'poorStory', fontSize: 26),
           ),
@@ -18,12 +19,12 @@ class RequestDetail extends StatelessWidget {
               onPressed: () {
                 Navigator.pop(context);
               },
-              child: Icon(
+              child: const Icon(
                 Icons.arrow_back,
                 color: Colors.white,
               )),
           toolbarHeight: 80,
-          backgroundColor: Color.fromRGBO(255, 72, 72, 1),
+          backgroundColor: const Color.fromRGBO(255, 72, 72, 1),
           shadowColor: Colors.transparent,
         ),
         body: SafeArea(
@@ -33,13 +34,13 @@ class RequestDetail extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
           child: Column(
             children: [
-              SizedBox(
+              const SizedBox(
                 height: 150,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Column(
+                  const Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -102,52 +103,52 @@ class RequestDetail extends StatelessWidget {
                     children: [
                       Text(
                         ": ${data[0]}",
-                        style: TextStyle(
+                        style: const TextStyle(
                             color: Color.fromRGBO(255, 72, 72, 1),
                             fontSize: 18),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 10,
                       ),
                       Text(
                         ": ${data[1]}",
-                        style: TextStyle(
+                        style: const TextStyle(
                             color: Color.fromRGBO(255, 72, 72, 1),
                             fontSize: 18),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 10,
                       ),
                       Text(
                         ": ${data[2]}",
-                        style: TextStyle(
+                        style: const TextStyle(
                             color: Color.fromRGBO(255, 72, 72, 1),
                             fontSize: 18),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 10,
                       ),
                       Text(
                         ": ${data[3]}",
-                        style: TextStyle(
+                        style: const TextStyle(
                             color: Color.fromRGBO(255, 72, 72, 1),
                             fontSize: 18),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 10,
                       ),
                       Text(
                         ": ${data[4]}",
-                        style: TextStyle(
+                        style: const TextStyle(
                             color: Color.fromRGBO(255, 72, 72, 1),
                             fontSize: 18),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 10,
                       ),
                       Text(
                         ": ${data[5]}",
-                        style: TextStyle(
+                        style: const TextStyle(
                             color: Color.fromRGBO(255, 72, 72, 1),
                             fontSize: 18),
                       ),
@@ -155,18 +156,18 @@ class RequestDetail extends StatelessWidget {
                   ),
                 ],
               ),
-              SizedBox(
+              const SizedBox(
                 height: 50,
               ),
               ElevatedButton(
                 onPressed: () {
                   Navigator.pop(context);
                 },
-                child: Text("Back"),
                 style: ElevatedButton.styleFrom(
-                    backgroundColor: Color.fromRGBO(255, 72, 72, 1),
-                    padding:
-                        EdgeInsets.symmetric(vertical: 12, horizontal: 50)),
+                    backgroundColor: const Color.fromRGBO(255, 72, 72, 1),
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 12, horizontal: 50)),
+                child: const Text("Back"),
               ),
             ],
           ),

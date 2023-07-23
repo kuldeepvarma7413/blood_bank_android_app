@@ -1,3 +1,4 @@
+// ignore: file_names
 import 'package:flutter/material.dart';
 
 class Screen1 extends StatelessWidget {
@@ -13,9 +14,7 @@ class Screen1 extends StatelessWidget {
           child: Container(
             color: Colors.white,
             alignment: Alignment.center,
-            child: Container(
-              child: Image.asset('images/bloodbank.png'),
-            ),
+            child: Image.asset('images/bloodbank.png'),
           ),
         )),
       ),

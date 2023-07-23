@@ -1,11 +1,12 @@
-import 'package:blood_bank/NumberAuthentication.dart';
+// ignore: file_names
 import 'package:blood_bank/database/db_fun.dart';
 import 'package:blood_bank/requestAccepted.dart';
 import 'package:flutter/material.dart';
 
+// ignore: camel_case_types, must_be_immutable
 class deleteRequest extends StatelessWidget {
   List<String> data;
-  deleteRequest(this.data);
+  deleteRequest(this.data, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +14,7 @@ class deleteRequest extends StatelessWidget {
       home: Scaffold(
         appBar: AppBar(
           centerTitle: true,
-          title: Text(
+          title: const Text(
             "Request Detail",
             style: TextStyle(fontFamily: 'poorStory', fontSize: 26),
           ),
@@ -21,12 +22,12 @@ class deleteRequest extends StatelessWidget {
               onPressed: () {
                 Navigator.pop(context);
               },
-              child: Icon(
+              child: const Icon(
                 Icons.arrow_back,
                 color: Colors.white,
               )),
           toolbarHeight: 80,
-          backgroundColor: Color.fromRGBO(255, 72, 72, 1),
+          backgroundColor: const Color.fromRGBO(255, 72, 72, 1),
           shadowColor: Colors.transparent,
         ),
         body: SafeArea(
@@ -36,13 +37,13 @@ class deleteRequest extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
           child: Column(
             children: [
-              SizedBox(
+              const SizedBox(
                 height: 150,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Column(
+                  const Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -105,52 +106,52 @@ class deleteRequest extends StatelessWidget {
                     children: [
                       Text(
                         ": ${data[0]}",
-                        style: TextStyle(
+                        style: const TextStyle(
                             color: Color.fromRGBO(255, 72, 72, 1),
                             fontSize: 18),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 10,
                       ),
                       Text(
                         ": ${data[1]}",
-                        style: TextStyle(
+                        style: const TextStyle(
                             color: Color.fromRGBO(255, 72, 72, 1),
                             fontSize: 18),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 10,
                       ),
                       Text(
                         ": ${data[2]}",
-                        style: TextStyle(
+                        style: const TextStyle(
                             color: Color.fromRGBO(255, 72, 72, 1),
                             fontSize: 18),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 10,
                       ),
                       Text(
                         ": ${data[3]}",
-                        style: TextStyle(
+                        style: const TextStyle(
                             color: Color.fromRGBO(255, 72, 72, 1),
                             fontSize: 18),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 10,
                       ),
                       Text(
                         ": ${data[4]}",
-                        style: TextStyle(
+                        style: const TextStyle(
                             color: Color.fromRGBO(255, 72, 72, 1),
                             fontSize: 18),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 10,
                       ),
                       Text(
                         ": ${data[5]}",
-                        style: TextStyle(
+                        style: const TextStyle(
                             color: Color.fromRGBO(255, 72, 72, 1),
                             fontSize: 18),
                       ),
@@ -158,26 +159,25 @@ class deleteRequest extends StatelessWidget {
                   ),
                 ],
               ),
-              SizedBox(
+              const SizedBox(
                 height: 50,
               ),
               ElevatedButton(
                 onPressed: () async {
-                  DatabaseHelper()
-                      .deleteCurrentRequest(NumberAuthentication.number);
+                  DatabaseHelper().deleteCurrentRequest(data[5]);
                   Navigator.push(
                       context,
                       MaterialPageRoute(
                           builder: (context) => RequestAccepted(
                               "Request successfully deleted.")));
                 },
-                child: Text("Delete"),
                 style: ElevatedButton.styleFrom(
-                    backgroundColor: Color.fromRGBO(255, 72, 72, 1),
-                    padding:
-                        EdgeInsets.symmetric(vertical: 12, horizontal: 45)),
+                    backgroundColor: const Color.fromRGBO(255, 72, 72, 1),
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 12, horizontal: 45)),
+                child: const Text("Delete"),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               ElevatedButton(
@@ -186,11 +186,11 @@ class deleteRequest extends StatelessWidget {
                   Navigator.pop(context);
                   Navigator.pop(context);
                 },
-                child: Text("Back"),
                 style: ElevatedButton.styleFrom(
-                    backgroundColor: Color.fromRGBO(255, 72, 72, 1),
-                    padding:
-                        EdgeInsets.symmetric(vertical: 12, horizontal: 50)),
+                    backgroundColor: const Color.fromRGBO(255, 72, 72, 1),
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 12, horizontal: 50)),
+                child: const Text("Back"),
               ),
             ],
           ),

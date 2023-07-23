@@ -1,16 +1,19 @@
-import 'package:blood_bank/Signup.dart';
-import 'package:blood_bank/findDonors.dart';
-import 'package:blood_bank/home.dart';
-import 'package:blood_bank/requestdetail.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'Screen1.dart';
-import 'Screen2.dart';
-import 'Screen3.dart';
-import 'Screen4.dart';
 import 'NumberAuthentication.dart';
-import 'database/db_fun.dart';
+import 'package:blood_bank/Screen1.dart';
+import 'package:blood_bank/Screen2.dart';
+import 'package:blood_bank/Screen3.dart';
+import 'package:blood_bank/Screen4.dart';
+import 'package:blood_bank/home.dart';
+import 'package:blood_bank/database/db_fun.dart';
 import 'firebase_options.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+Future<bool> isUserLoggedIn() async {
+  final prefs = await SharedPreferences.getInstance();
+  return prefs.getBool('loggedIn') ?? false;
+}
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -19,30 +22,15 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  // List<String> data = await DatabaseHelper().getdata("7413912366");
-  // FirebaseFirestore db = FirebaseFirestore.instance;
-  // DatabaseHelper().getDetails(db);
-  // print(await DatabaseHelper().addrequest(
-  //     "kuldeep prajapat", "B-", "male", "friend", "22", "requested"));
-  // print(await DatabaseHelper().getExistance("7413917327"));
-  // print("done");
-  // print(DatabaseHelper().addUser(
-  //     21, "O+", "15/5/2003", "no issues", "sandeep singh", 8575515152));
-  // print("hii");
-  // print();
-  // print("hii");
-  // List<String> a = await DatabaseHelper().getdata("8003488396");
-  // print(a);
-  // print(await DatabaseHelper().getrequestedusers());
-  // print(DatabaseHelper().getrequestedusers());
-
+  var pref = await SharedPreferences.getInstance();
+  String? number = pref.getString('number');
+  List<String> data = await DatabaseHelper().getdata(number);
   runApp(MaterialApp(
-    home: MyApp(),
-  ));
+      home: await isUserLoggedIn() ? home(data, number) : const MyApp()));
 }
 
 class MyApp extends StatelessWidget {
-  MyApp();
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -52,16 +40,12 @@ class MyApp extends StatelessWidget {
       /// Use [Axis.vertical] to scroll vertically.
       controller: controller,
       scrollDirection: Axis.horizontal,
-      children: [
-        // RequestDetail()
-        // signup(),
-        // home(data),
-        // Screen1(),
-        // Screen2(),
-        // Screen3(),
-        // Screen4(),
+      children: const [
+        Screen1(),
+        Screen2(),
+        Screen3(),
+        Screen4(),
         NumberAuthentication()
-        // findDonors()
       ],
     );
   }

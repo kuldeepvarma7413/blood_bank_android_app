@@ -1,14 +1,16 @@
+import 'package:blood_bank/NumberAuthentication.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class DatabaseHelper {
   static FirebaseFirestore db = FirebaseFirestore.instance;
 
 //returning user data
-  Future<List<String>> getdata(String number) async {
+  Future<List<String>> getdata(String? number) async {
     try {
       List<String> info = [];
       var data =
           await db.collection("users").where("number", isEqualTo: number).get();
+      // ignore: avoid_function_literals_in_foreach_calls
       data.docs.forEach((element) {
         info.add(element['name']);
         info.add(element['dob']);
@@ -31,6 +33,7 @@ class DatabaseHelper {
           .collection("requests")
           .where("number", isEqualTo: number)
           .get();
+      // ignore: avoid_function_literals_in_foreach_calls
       data.docs.forEach((element) {
         info.add(element['name']);
         info.add(element['patientBlood']);
@@ -47,7 +50,7 @@ class DatabaseHelper {
 
 //  update request after acceptance
   Future<bool> isRequestUpdated(
-      List<String> data, String number1, String number2) async {
+      List<String> data, String? number1, String? number2) async {
     try {
       var id = "";
       await db
@@ -56,6 +59,7 @@ class DatabaseHelper {
           .get()
           .then(
             (QuerySnapshot snapshot) => {
+              // ignore: avoid_function_literals_in_foreach_calls
               snapshot.docs.forEach((f) {
                 id = f.reference.id;
               }),
@@ -64,7 +68,8 @@ class DatabaseHelper {
       db
           .collection("requests")
           .doc(id)
-          .update({"status": "accepted", "acceptedBy": number2}).onError(
+          .update({"status": "accepted", "donor": number2}).onError(
+              // ignore: avoid_print
               (error, stackTrace) => print("Error"));
       return true;
     } catch (e) {
@@ -89,6 +94,7 @@ class DatabaseHelper {
           .collection("users")
           .doc()
           .set(user)
+          // ignore: avoid_print
           .onError((error, stackTrace) => print("Error"));
       return true;
     } catch (e) {
@@ -101,7 +107,7 @@ class DatabaseHelper {
     try {
       var data =
           await db.collection("users").where("number", isEqualTo: number).get();
-      if (data.docs.length > 0) {
+      if (data.docs.isNotEmpty) {
         return true;
       } else {
         return false;
@@ -116,9 +122,10 @@ class DatabaseHelper {
       String user,
       String patientBlood,
       String patientGender,
+      // ignore: non_constant_identifier_names
       String PatientRelation,
+      // ignore: non_constant_identifier_names
       String PatientAge,
-      String status,
       String number) async {
     try {
       final request = {
@@ -127,9 +134,13 @@ class DatabaseHelper {
         "patientGender": patientGender,
         "patientRelation": PatientRelation,
         "patientAge": PatientAge,
-        "status": status,
+        "status": "requested",
         "number": number,
-        "acceptedBy": ""
+        "requested_by": number,
+        "donor": "",
+        "createdAt": DateTime.now().millisecondsSinceEpoch.toString(),
+        // "qty": _quantityController.text.trim(),
+        "qty": 0.2
       };
       if (await isRequestAlreadyExist(number)) {
         return false;
@@ -138,6 +149,7 @@ class DatabaseHelper {
             .collection("requests")
             .doc()
             .set(request)
+            // ignore: avoid_print
             .onError((error, stackTrace) => print("Error"));
         return true;
       }
@@ -152,8 +164,9 @@ class DatabaseHelper {
       var data = await db
           .collection("requests")
           .where("number", isEqualTo: number)
+          // .where("status", isNotEqualTo: "requested")
           .get();
-      if (data.docs.length > 0) {
+      if (data.docs.isNotEmpty) {
         return true;
       } else {
         return false;
@@ -164,13 +177,14 @@ class DatabaseHelper {
   }
 
 // return contact number of all requested users
-  Future<List<String>> getrequestedusers(String number) async {
+  Future<List<String>> getrequestedusers(String? number) async {
     try {
       List<String> info = [];
       var data = await db
           .collection("requests")
           .where("status", isEqualTo: "requested")
           .get();
+      // ignore: avoid_function_literals_in_foreach_calls
       data.docs.forEach((element) {
         if (element['number'] != number) {
           info.add(element['number']);
@@ -191,11 +205,99 @@ class DatabaseHelper {
         .get()
         .then(
           (QuerySnapshot snapshot) => {
+            // ignore: avoid_function_literals_in_foreach_calls
             snapshot.docs.forEach((f) {
               id = f.reference.id;
+              db.collection("requests").doc(id).delete();
             }),
           },
         );
-    await db.collection("requests").doc(id).delete();
+  }
+
+  Future sendMessage(
+      String receiverId, String message, List<String> data) async {
+    // create a message object
+    MessageModel msg = MessageModel(
+      content: message,
+      createAt: DateTime.now().millisecondsSinceEpoch.toString(),
+      receiverId: receiverId,
+      senderId: NumberAuthentication.number,
+      senderName: data[0],
+    );
+
+    // list of ids
+    List<String> ids = [receiverId, NumberAuthentication.number];
+    ids.sort(); // sort to create only 1 chat room between 2 users
+
+    // create chat room id
+    String chatRoomId = ids.join("_");
+
+    // create a chat room and add message to it
+    db
+        .collection("chat_rooms")
+        .doc(chatRoomId)
+        .collection("messages")
+        .add(msg.toMap());
+
+    // add participants to chat room
+    db
+        .collection("chat_rooms")
+        .doc(chatRoomId)
+        .set({'participants': ids}, SetOptions(merge: true));
+  }
+
+  // get messages
+  Stream<QuerySnapshot> getMessages(String receiverId) {
+    // construct chatroom id
+    List<String> ids = [NumberAuthentication.number, receiverId];
+
+    // sort to ensure that the chat room id is always the same for 2 user
+    ids.sort();
+
+    // combine the ids with an underscore to create a chat room id
+    String chatRoomId = ids.join('_');
+
+    // find chatroom
+    return db
+        .collection('chat_rooms')
+        .doc(chatRoomId)
+        .collection('messages')
+        .orderBy('createdAt', descending: true)
+        .snapshots();
+  }
+
+  // all contacts connected on message
+  Stream<QuerySnapshot> getContacts(String number) {
+    return db
+        .collection('chat_rooms')
+        .where("participants", arrayContains: number)
+        .snapshots();
+  }
+}
+
+class MessageModel {
+  String content;
+  String createAt;
+  String receiverId;
+  String senderId;
+  String senderName;
+
+  MessageModel({
+    required this.content,
+    required this.createAt,
+    required this.receiverId,
+    required this.senderId,
+    required this.senderName,
+  });
+
+  // convert to map
+  Map<String, dynamic> toMap() {
+    return {
+      'senderId': senderId,
+      'senderName': senderName,
+      'receiverId': receiverId,
+      'content': content,
+      'createdAt': createAt
+    };
   }
 }

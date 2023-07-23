@@ -1,9 +1,16 @@
+// ignore: file_names
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'otpverification.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+Future<void> setUserLoggedIn(bool value) async {
+  final prefs = await SharedPreferences.getInstance();
+  prefs.setBool('loggedIn', false);
+}
 
 class NumberAuthentication extends StatelessWidget {
-  NumberAuthentication({super.key});
+  const NumberAuthentication({super.key});
   static String countryCode = "+91";
   static String verify = "";
   static String number = "";
@@ -25,15 +32,15 @@ class NumberAuthentication extends StatelessWidget {
               children: [
                 Container(
                     // height: 450,
-                    margin: EdgeInsets.fromLTRB(0, 30, 0, 0),
-                    child: Text(
+                    margin: const EdgeInsets.fromLTRB(0, 30, 0, 0),
+                    child: const Text(
                       "Enter Your Mobile Number",
                       textAlign: TextAlign.center,
                       style: TextStyle(fontFamily: 'PoorStory', fontSize: 20),
                     )),
                 Container(
                   width: 300,
-                  margin: EdgeInsets.fromLTRB(0, 12, 0, 0),
+                  margin: const EdgeInsets.fromLTRB(0, 12, 0, 0),
                   child: Form(
                     child: TextFormField(
                       onChanged: (value) {
@@ -47,22 +54,23 @@ class NumberAuthentication extends StatelessWidget {
                       //   }
                       // },
                       keyboardType: TextInputType.number,
-                      cursorColor: Color.fromRGBO(255, 72, 72, 1),
+                      cursorColor: const Color.fromRGBO(255, 72, 72, 1),
                       decoration: InputDecoration(
                           focusedBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(
                                 20,
                               ),
-                              borderSide: BorderSide(color: Colors.black)),
+                              borderSide:
+                                  const BorderSide(color: Colors.black)),
                           border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(
                                 20,
                               ),
-                              borderSide: BorderSide(color: Colors.red)),
+                              borderSide: const BorderSide(color: Colors.red)),
                           prefixIcon: Container(
                             width: 100,
                             alignment: Alignment.center,
-                            child: Text(
+                            child: const Text(
                               "+91",
                               style: TextStyle(
                                   color: Colors.red,
@@ -72,7 +80,7 @@ class NumberAuthentication extends StatelessWidget {
                               // textAlign: TextAlign.right,
                             ),
                           )),
-                      style: TextStyle(
+                      style: const TextStyle(
                           color: Colors.red,
                           fontSize: 18,
                           fontFamily: 'Montserrat',
@@ -84,11 +92,11 @@ class NumberAuthentication extends StatelessWidget {
                   width: 300,
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
-                      color: Color.fromRGBO(250, 72, 72, 1)),
-                  margin: EdgeInsets.fromLTRB(0, 70, 0, 0),
-                  padding: EdgeInsets.fromLTRB(30, 12, 30, 12),
+                      color: const Color.fromRGBO(250, 72, 72, 1)),
+                  margin: const EdgeInsets.fromLTRB(0, 70, 0, 0),
+                  padding: const EdgeInsets.fromLTRB(30, 12, 30, 12),
                   child: TextButton(
-                    child: Text(
+                    child: const Text(
                       "GET OTP",
                       style: TextStyle(
                         color: Colors.white,
@@ -96,29 +104,24 @@ class NumberAuthentication extends StatelessWidget {
                         fontWeight: FontWeight.w500,
                       ),
                     ),
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => otpverification()));
+                    onPressed: () async {
+                      const CircularProgressIndicator();
+                      await FirebaseAuth.instance.verifyPhoneNumber(
+                        phoneNumber: countryCode + number,
+                        verificationCompleted:
+                            (PhoneAuthCredential credential) {},
+                        verificationFailed: (FirebaseAuthException e) {},
+                        codeSent: (String verificationId, int? resendToken) {
+                          NumberAuthentication.verify = verificationId;
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      const otpverification()));
+                        },
+                        codeAutoRetrievalTimeout: (String verificationId) {},
+                      );
                     },
-                    // onPressed: () async {
-                    //   CircularProgressIndicator();
-                    //   await FirebaseAuth.instance.verifyPhoneNumber(
-                    //     phoneNumber: "${countryCode + number}",
-                    //     verificationCompleted:
-                    //         (PhoneAuthCredential credential) {},
-                    //     verificationFailed: (FirebaseAuthException e) {},
-                    //     codeSent: (String verificationId, int? resendToken) {
-                    //       NumberAuthentication.verify = verificationId;
-                    //       Navigator.push(
-                    //           context,
-                    //           MaterialPageRoute(
-                    //               builder: (context) => otpverification()));
-                    //     },
-                    //     codeAutoRetrievalTimeout: (String verificationId) {},
-                    //   );
-                    // },
                   ),
                 )
               ],
