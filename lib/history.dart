@@ -1,4 +1,3 @@
-import 'package:blood_bank/NumberAuthentication.dart';
 import 'package:blood_bank/messaging.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -15,12 +14,13 @@ String formatTime(String timestamp) {
   }
 }
 
-// ignore: camel_case_types
+// ignore: camel_case_types, must_be_immutable
 class history extends StatefulWidget {
   String? number;
-  history(this.number);
+  history(this.number, {super.key});
 
   @override
+  // ignore: no_logic_in_create_state
   State<history> createState() => _historyState(number);
 }
 

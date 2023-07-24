@@ -1,7 +1,5 @@
-import 'package:blood_bank/NumberAuthentication.dart';
 import 'package:blood_bank/database/db_fun.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:intl/intl.dart';
 
 // ignore: camel_case_types, must_be_immutable
@@ -29,8 +27,7 @@ class _messagingState extends State<messaging> {
     message = message.trim();
 
     if (message.isNotEmpty) {
-      var data = await DatabaseHelper().getdata(number);
-      DatabaseHelper().sendMessage(receiverId, message, data);
+      DatabaseHelper().sendMessage(receiverId, message, number);
     }
     _messageController.clear();
   }
@@ -129,7 +126,7 @@ class _messagingState extends State<messaging> {
 
 Widget getRequests(String receiverId, String? number) {
   return StreamBuilder(
-      stream: DatabaseHelper().getMessages(receiverId),
+      stream: DatabaseHelper().getMessages(receiverId, number),
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         if (snapshot.hasError) {
           return const Center(child: Text("Something went wrong!"));
@@ -169,8 +166,7 @@ String formatTime(String timestamp) {
 }
 
 Widget _messageTile(Map<String, dynamic> data, String? number) {
-  final userId = number;
-  var isMe = data['senderId'] == userId;
+  var isMe = data['senderId'] == number;
 
   return Container(
     margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),

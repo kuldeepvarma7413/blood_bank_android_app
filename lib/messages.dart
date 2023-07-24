@@ -1,22 +1,22 @@
-import 'package:blood_bank/NumberAuthentication.dart';
 import 'package:blood_bank/messaging.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
-// ignore: camel_case_types
+// ignore: camel_case_types, must_be_immutable
 class messages extends StatefulWidget {
   String? number;
-  messages(this.number);
+  messages(this.number, {super.key});
 
   @override
+  // ignore: no_logic_in_create_state
   State<messages> createState() => _messagesState(number);
 }
 
 // ignore: camel_case_types
 class _messagesState extends State<messages> {
   String? number;
-  _messagesState(this.number);
+  _messagesState(this.number) {}
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
