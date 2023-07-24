@@ -1,4 +1,3 @@
-import 'package:blood_bank/NumberAuthentication.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class DatabaseHelper {
@@ -214,19 +213,18 @@ class DatabaseHelper {
         );
   }
 
-  Future sendMessage(
-      String receiverId, String message, List<String> data) async {
+  Future sendMessage(String receiverId, String message, String? number) async {
     // create a message object
     MessageModel msg = MessageModel(
       content: message,
       createAt: DateTime.now().millisecondsSinceEpoch.toString(),
       receiverId: receiverId,
-      senderId: NumberAuthentication.number,
-      senderName: data[0],
+      senderId: number,
+      senderName: number,
     );
 
     // list of ids
-    List<String> ids = [receiverId, NumberAuthentication.number];
+    List<String?> ids = [receiverId, number];
     ids.sort(); // sort to create only 1 chat room between 2 users
 
     // create chat room id
@@ -247,9 +245,9 @@ class DatabaseHelper {
   }
 
   // get messages
-  Stream<QuerySnapshot> getMessages(String receiverId) {
+  Stream<QuerySnapshot> getMessages(String receiverId, String? number) {
     // construct chatroom id
-    List<String> ids = [NumberAuthentication.number, receiverId];
+    List<String?> ids = [number, receiverId];
 
     // sort to ensure that the chat room id is always the same for 2 user
     ids.sort();
@@ -279,8 +277,8 @@ class MessageModel {
   String content;
   String createAt;
   String receiverId;
-  String senderId;
-  String senderName;
+  String? senderId;
+  String? senderName;
 
   MessageModel({
     required this.content,

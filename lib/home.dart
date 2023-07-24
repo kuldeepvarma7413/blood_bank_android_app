@@ -1,7 +1,6 @@
 import 'package:blood_bank/findDonors.dart';
 import 'package:blood_bank/requests.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'Navbar.dart';
 import 'database/db_fun.dart';
 
@@ -9,7 +8,7 @@ import 'database/db_fun.dart';
 class home extends StatefulWidget {
   List<String> data;
   String? number;
-  home(this.data, this.number);
+  home(this.data, this.number, {super.key});
 
   @override
   // ignore: no_logic_in_create_state

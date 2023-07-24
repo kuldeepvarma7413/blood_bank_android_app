@@ -1,4 +1,5 @@
 // ignore: file_names
+// ignore: file_names
 import 'package:blood_bank/NumberAuthentication.dart';
 import 'package:blood_bank/SettingScreen.dart';
 import 'package:blood_bank/database/db_fun.dart';
@@ -12,7 +13,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class Navbar extends StatefulWidget {
   List<String> data = [];
   String? number;
-  Navbar(this.data, this.number);
+  Navbar(this.data, this.number, {super.key});
 
   @override
   // ignore: no_logic_in_create_state
@@ -100,13 +101,8 @@ class _NavbarState extends State<Navbar> {
                 ),
                 title: const Text("History", style: TextStyle(fontSize: 18)),
                 onTap: () async {
-                  SharedPreferences pref =
-                      await SharedPreferences.getInstance();
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) =>
-                              history(pref.getString('number'))));
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => history(number)));
                 },
               ),
               const Divider(),
