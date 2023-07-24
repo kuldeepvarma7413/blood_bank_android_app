@@ -48,8 +48,7 @@ class DatabaseHelper {
   }
 
 //  update request after acceptance
-  Future<bool> isRequestUpdated(
-      List<String> data, String? number1, String? number2) async {
+  Future<bool> isRequestUpdated(String? number1, String? number2) async {
     try {
       var id = "";
       await db
@@ -141,39 +140,36 @@ class DatabaseHelper {
         // "qty": _quantityController.text.trim(),
         "qty": 0.2
       };
-      if (await isRequestAlreadyExist(number)) {
-        return false;
-      } else {
-        db
-            .collection("requests")
-            .doc()
-            .set(request)
-            // ignore: avoid_print
-            .onError((error, stackTrace) => print("Error"));
-        return true;
-      }
+
+      db
+          .collection("requests")
+          .doc()
+          .set(request)
+          // ignore: avoid_print
+          .onError((error, stackTrace) => print("Error"));
+      return true;
     } catch (e) {
       return false;
     }
   }
 
   // get mobile number to check request existance to avoid multiple request from one user
-  Future<bool> isRequestAlreadyExist(String number) async {
-    try {
-      var data = await db
-          .collection("requests")
-          .where("number", isEqualTo: number)
-          // .where("status", isNotEqualTo: "requested")
-          .get();
-      if (data.docs.isNotEmpty) {
-        return true;
-      } else {
-        return false;
-      }
-    } catch (e) {
-      return false;
-    }
-  }
+  // Future<bool> isRequestAlreadyExist(String number) async {
+  //   try {
+  //     var data = await db
+  //         .collection("requests")
+  //         .where("number", isEqualTo: number)
+  //         // .where("status", isNotEqualTo: "requested")
+  //         .get();
+  //     if (data.docs.isNotEmpty) {
+  //       return true;
+  //     } else {
+  //       return false;
+  //     }
+  //   } catch (e) {
+  //     return false;
+  //   }
+  // }
 
 // return contact number of all requested users
   Future<List<String>> getrequestedusers(String? number) async {

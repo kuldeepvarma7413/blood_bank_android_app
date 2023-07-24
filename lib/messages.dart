@@ -92,13 +92,9 @@ Widget messageItem(BuildContext context, String otherUserId, String? number) {
   // show donor id and mss on left side, on right side show a right icon
   return InkWell(
     onTap: () => Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) {
-          return messaging(otherUserId, number);
-        },
-      ),
-    ),
+        context,
+        MaterialPageRoute(
+            builder: (context) => messaging(otherUserId, number))),
     child: Container(
       // margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
@@ -120,7 +116,8 @@ Widget messageItem(BuildContext context, String otherUserId, String? number) {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(otherUserId.substring(0, 10),
+              Text(
+                  "${otherUserId.substring(0, 4)}***${otherUserId.substring(7, 10)}",
                   style: const TextStyle(
                       fontSize: 20,
                       color: Colors.black,

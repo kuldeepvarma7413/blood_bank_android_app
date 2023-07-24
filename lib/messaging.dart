@@ -51,7 +51,7 @@ class _messagingState extends State<messaging> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    receiverId.substring(0, 10),
+                    "${receiverId.substring(0, 4)}***${receiverId.substring(7, 10)}",
                     style:
                         const TextStyle(fontFamily: 'poorStory', fontSize: 26),
                   ),
