@@ -1,4 +1,6 @@
 // ignore: file_names
+import 'dart:async';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'otpverification.dart';
@@ -9,12 +11,25 @@ Future<void> setUserLoggedIn(bool value) async {
   prefs.setBool('loggedIn', false);
 }
 
-class NumberAuthentication extends StatelessWidget {
-  const NumberAuthentication({super.key});
-  static String countryCode = "+91";
+class NumberAuthentication extends StatefulWidget {
+  const NumberAuthentication();
+  static String countryCode = "";
   static String verify = "";
   static String number = "";
   static String pin = "";
+  static bool _isPressed = false;
+
+  @override
+  State<NumberAuthentication> createState() => _NumberAuthenticationState();
+}
+
+class _NumberAuthenticationState extends State<NumberAuthentication> {
+  _NumberAuthenticationState();
+  String countryCode = "+91";
+  String verify = "";
+  String number = "";
+  String pin = "";
+  bool _isPressed = false;
 
   @override
   Widget build(BuildContext context) {
@@ -104,24 +119,35 @@ class NumberAuthentication extends StatelessWidget {
                         fontWeight: FontWeight.w500,
                       ),
                     ),
-                    onPressed: () async {
-                      const CircularProgressIndicator();
-                      await FirebaseAuth.instance.verifyPhoneNumber(
-                        phoneNumber: countryCode + number,
-                        verificationCompleted:
-                            (PhoneAuthCredential credential) {},
-                        verificationFailed: (FirebaseAuthException e) {},
-                        codeSent: (String verificationId, int? resendToken) {
-                          NumberAuthentication.verify = verificationId;
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      const otpverification()));
-                        },
-                        codeAutoRetrievalTimeout: (String verificationId) {},
-                      );
-                    },
+                    onPressed: _isPressed
+                        ? null
+                        : () async {
+                            setState(() {
+                              _isPressed = true;
+                            });
+                            Timer(Duration(seconds: 15), () {
+                              setState(() {
+                                _isPressed = false;
+                              });
+                            });
+                            await FirebaseAuth.instance.verifyPhoneNumber(
+                              phoneNumber: countryCode + number,
+                              verificationCompleted:
+                                  (PhoneAuthCredential credential) {},
+                              verificationFailed: (FirebaseAuthException e) {},
+                              codeSent:
+                                  (String verificationId, int? resendToken) {
+                                verify = verificationId;
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => otpverification(
+                                            countryCode, number, verify)));
+                              },
+                              codeAutoRetrievalTimeout:
+                                  (String verificationId) {},
+                            );
+                          },
                   ),
                 )
               ],

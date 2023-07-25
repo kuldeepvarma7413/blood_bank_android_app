@@ -42,6 +42,23 @@ class Screen3 extends StatelessWidget {
                         fontFamily: 'PoorStory'),
                     textAlign: TextAlign.center,
                   ),
+                ),
+                SizedBox(
+                  height: 185,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.arrow_back,
+                      color: Colors.white,
+                    ),
+                    Text(
+                      " Swipe left to continue",
+                      style: TextStyle(color: Colors.white),
+                      // textAlign: TextAlign.center,
+                    ),
+                  ],
                 )
               ],
             ),

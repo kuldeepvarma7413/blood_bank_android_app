@@ -143,7 +143,7 @@ class _NavbarState extends State<Navbar> {
                   Navigator.pushAndRemoveUntil(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const NumberAuthentication()),
+                          builder: (context) => NumberAuthentication()),
                       (route) => false);
                 },
                 child: Row(
