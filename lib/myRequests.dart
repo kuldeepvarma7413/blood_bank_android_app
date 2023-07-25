@@ -1,10 +1,8 @@
-import 'package:blood_bank/myRequests.dart';
+import 'package:blood_bank/messaging.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/gestures.dart';
 import 'package:intl/intl.dart';
-import 'package:blood_bank/database/db_fun.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 String formatTime(String timestamp) {
   final date = DateTime.fromMillisecondsSinceEpoch(int.parse(timestamp));
@@ -18,19 +16,19 @@ String formatTime(String timestamp) {
 }
 
 // ignore: camel_case_types, must_be_immutable
-class requests extends StatefulWidget {
+class myRequests extends StatefulWidget {
   String? number;
-  requests(this.number, {super.key});
+  myRequests(this.number, {super.key});
 
   @override
   // ignore: no_logic_in_create_state
-  State<requests> createState() => _requestsState(number);
+  State<myRequests> createState() => _myRequestsState(number);
 }
 
 // ignore: camel_case_types
-class _requestsState extends State<requests> {
+class _myRequestsState extends State<myRequests> {
   String? number;
-  _requestsState(this.number);
+  _myRequestsState(this.number);
   @override
   Widget build(BuildContext context) {
     // ignore: prefer_is_empty
@@ -39,7 +37,7 @@ class _requestsState extends State<requests> {
             appBar: AppBar(
               centerTitle: true,
               title: const Text(
-                "Requests",
+                "My Requests",
                 style: TextStyle(fontFamily: 'poorStory', fontSize: 26),
               ),
               leading: TextButton(
@@ -50,23 +48,6 @@ class _requestsState extends State<requests> {
                     Icons.arrow_back,
                     color: Colors.white,
                   )),
-              actions: [
-                IconButton(
-                  icon: Icon(Icons.calendar_today),
-                  onPressed: () async {
-                    SharedPreferences pref =
-                        await SharedPreferences.getInstance();
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                myRequests(pref.getString('number'))));
-                  },
-                ),
-                SizedBox(
-                  width: 15,
-                )
-              ],
               toolbarHeight: 80,
               backgroundColor: const Color.fromRGBO(255, 72, 72, 1),
               shadowColor: Colors.transparent,
@@ -79,18 +60,18 @@ class _requestsState extends State<requests> {
                 child: SafeArea(
                   child: Container(
                     // padding: const EdgeInsets.only(top: 0),
-                    child: getRequests(number),
+                    child: getmyRequests(number),
                   ),
                 ))));
   }
 }
 
-Widget getRequests(String? number) {
+Widget getmyRequests(String? number) {
   return StreamBuilder(
-      // filter requests where status is pending, and it is not in the declined_requests array of user
+      // filter myRequests where status is pending, and it is not in the declined_myRequests array of user
       stream: FirebaseFirestore.instance
           .collection("requests")
-          .where("status", isEqualTo: "requested")
+          .where("status", isEqualTo: "accepted")
           // .where("number", isNotEqualTo: number)
           .snapshots(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -111,23 +92,23 @@ Widget getRequests(String? number) {
         if (snapshot.data!.docs.isEmpty) {
           return const Center(
             child: Text(
-              "No requests found!",
+              "No myRequests found!",
               style: TextStyle(fontWeight: FontWeight.w500),
             ),
           );
         }
 
         // Filter out the documents where declined_by contains user.uid
-        // This is done to prevent user from seeing requests that he has declined
+        // This is done to prevent user from seeing myRequests that he has declined
         var filteredDocs = snapshot.data!.docs.where((doc) {
           final notUser = doc["number"];
-          return !notUser.contains(number);
+          return notUser.contains(number);
         }).toList();
 
         if (snapshot.data!.docs.isEmpty) {
           return const Center(
             child: Text(
-              "No requests found!",
+              "No myRequests found!",
               style: TextStyle(fontWeight: FontWeight.w500),
             ),
           );
@@ -168,9 +149,9 @@ Widget _buildRequestCard(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-                "${data['number'].substring(0, 4)}***${data['number'].substring(7, 10)}",
+                "Accepted By ${data['donor'].substring(0, 4)}***${data['donor'].substring(7, 10)}",
                 style: const TextStyle(
-                    fontSize: 24,
+                    fontSize: 20,
                     color: Colors.black,
                     fontWeight: FontWeight.w600)),
             const SizedBox(height: 10),
@@ -190,13 +171,17 @@ Widget _buildRequestCard(
             )
           ],
         ),
-
         // accept or decline buttons
         Column(
           children: [
             ElevatedButton(
               onPressed: () {
-                DatabaseHelper().isRequestUpdated(data['number'], number2);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => messaging(data['donor'], number2),
+                  ),
+                );
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Color(0xffFA4848),
@@ -205,23 +190,10 @@ Widget _buildRequestCard(
                 ),
               ),
               child: const Text(
-                "Accept",
+                "Message",
                 style: TextStyle(color: Colors.white, fontSize: 16),
               ),
             ),
-            // ElevatedButton(
-            //   onPressed: () => declineRequest(data),
-            //   style: ElevatedButton.styleFrom(
-            //     backgroundColor: CustomColors.whiteColor,
-            //     shape: RoundedRectangleBorder(
-            //       borderRadius: BorderRadius.circular(10),
-            //     ),
-            //   ),
-            //   child: const Text(
-            //     "Decline",
-            //     style: TextStyle(color: CustomColors.blackColor, fontSize: 16),
-            //   ),
-            // ),
           ],
         ),
       ],
@@ -248,6 +220,8 @@ void viewDetails(Map<String, dynamic> data, BuildContext context) {
               Text("Quantity: ${data['qty']} ml"),
               const SizedBox(height: 10),
               Text("Requested on: ${formatTime(data['createdAt'])}"),
+              const SizedBox(height: 10),
+              Text("Accepted By: ${data['donor']}"),
             ],
           ),
           actions: [

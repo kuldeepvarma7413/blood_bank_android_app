@@ -1,8 +1,6 @@
 // ignore: file_names
 // ignore: file_names
-import 'package:blood_bank/addRequestError.dart';
 import 'package:flutter/material.dart';
-
 import 'database/db_fun.dart';
 
 // ignore: camel_case_types, must_be_immutable
@@ -519,12 +517,6 @@ class _findDonorsState extends State<findDonors> {
                           // ignore: use_build_context_synchronously
                           Navigator.pop(context);
                           _validate = false;
-                        } else {
-                          // ignore: use_build_context_synchronously
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => addRequestError(data)));
                         }
                       },
                       style: const ButtonStyle(

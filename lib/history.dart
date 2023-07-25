@@ -276,7 +276,7 @@ Widget getDonateItem(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               Text(
-                'To ${request['number'].substring(0, 10)}',
+                'To ${request['number'].substring(0, 4)}***${request['number'].substring(7, 10)}',
                 style: const TextStyle(
                   color: Colors.black,
                   fontSize: 16,
@@ -356,7 +356,7 @@ Widget getReceiveItem(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Text(
-                'By ${data['donor'].substring(0, 10)}',
+                'By ${data['donor'].substring(0, 4)}***${data['donor'].substring(7, 10)}',
                 style: const TextStyle(
                   color: Colors.black,
                   fontSize: 16,

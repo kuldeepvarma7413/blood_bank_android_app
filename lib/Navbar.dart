@@ -82,15 +82,11 @@ class _NavbarState extends State<Navbar> {
                 ),
                 title: const Text("Requests", style: TextStyle(fontSize: 18)),
                 onTap: () async {
-                  SharedPreferences pref =
-                      await SharedPreferences.getInstance();
-                  List<String> users = await DatabaseHelper()
-                      .getrequestedusers(pref.getString('number'));
                   // ignore: use_build_context_synchronously
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => requests(data, users)));
+                          builder: (context) => requests(number)));
                 },
               ),
               const Divider(),
@@ -147,7 +143,7 @@ class _NavbarState extends State<Navbar> {
                   Navigator.pushAndRemoveUntil(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const NumberAuthentication()),
+                          builder: (context) => NumberAuthentication()),
                       (route) => false);
                 },
                 child: Row(

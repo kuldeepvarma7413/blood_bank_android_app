@@ -7,10 +7,11 @@ import 'NumberAuthentication.dart';
 
 // ignore: camel_case_types
 class signup extends StatefulWidget {
-  const signup({super.key});
+  String number;
+  signup(this.number, {super.key});
 
   @override
-  State<signup> createState() => _signupState();
+  State<signup> createState() => _signupState(number);
 }
 
 // ignore: camel_case_types
@@ -22,10 +23,12 @@ class _signupState extends State<signup> {
     super.initState();
   }
 
+  _signupState(this.number);
+
   // Initial Selected Value
   String dropdownvalue = 'A+';
   String age = "";
-  String number = NumberAuthentication.number;
+  String number;
   String name = "";
   String healthCondition = "";
   String dob = "";
@@ -268,8 +271,7 @@ class _signupState extends State<signup> {
                                 number)) {
                               SharedPreferences pref =
                                   await SharedPreferences.getInstance();
-                              pref.setString(
-                                  'number', NumberAuthentication.number);
+                              pref.setString('number', number);
                               pref.setBool('loggedIn', true);
                               List<String> data =
                                   await DatabaseHelper().getdata(number);
@@ -277,8 +279,7 @@ class _signupState extends State<signup> {
                               Navigator.pushAndRemoveUntil(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => home(
-                                          data, NumberAuthentication.number)),
+                                      builder: (context) => home(data, number)),
                                   (route) => false);
                             }
                           },

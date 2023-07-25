@@ -2,7 +2,6 @@ import 'package:blood_bank/findDonors.dart';
 import 'package:blood_bank/requests.dart';
 import 'package:flutter/material.dart';
 import 'Navbar.dart';
-import 'database/db_fun.dart';
 
 // ignore: camel_case_types, must_be_immutable
 class home extends StatefulWidget {
@@ -179,13 +178,11 @@ class _homeState extends State<home> {
                 ),
                 ElevatedButton(
                     onPressed: () async {
-                      List<String> users =
-                          await DatabaseHelper().getrequestedusers(number);
                       // ignore: use_build_context_synchronously
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => requests(data, users)));
+                              builder: (context) => requests(number)));
                     },
                     style: const ButtonStyle(
                         backgroundColor: MaterialStatePropertyAll(

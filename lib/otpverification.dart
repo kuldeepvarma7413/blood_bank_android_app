@@ -8,23 +8,26 @@ import 'package:otp_text_field/otp_field.dart';
 import 'package:otp_text_field/style.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-void main() {
-  runApp(const otpverification());
-}
-
 String code = "";
 
 // ignore: camel_case_types
 class otpverification extends StatefulWidget {
-  const otpverification({super.key});
+  String countryCode;
+  String number;
+  String verify;
+  otpverification(this.countryCode, this.number, this.verify, {super.key});
 
   @override
-  State<otpverification> createState() => _otpverificationState();
+  State<otpverification> createState() =>
+      _otpverificationState(countryCode, number, verify);
 }
 
 // ignore: camel_case_types
 class _otpverificationState extends State<otpverification> {
-  _otpverificationState();
+  String countryCode;
+  String number;
+  String verify;
+  _otpverificationState(this.countryCode, this.number, this.verify);
   FirebaseAuth auth = FirebaseAuth.instance;
   @override
   Widget build(BuildContext context) {
@@ -51,7 +54,7 @@ class _otpverificationState extends State<otpverification> {
                 Container(
                   margin: const EdgeInsets.fromLTRB(0, 10, 0, 0),
                   child: Text(
-                    "Enter the OTP sent to ${NumberAuthentication.countryCode + NumberAuthentication.number}",
+                    "Enter the OTP sent to ${countryCode + number}",
                     style:
                         const TextStyle(fontFamily: 'poorStory', fontSize: 16),
                   ),
@@ -101,32 +104,29 @@ class _otpverificationState extends State<otpverification> {
                       try {
                         PhoneAuthCredential credential =
                             PhoneAuthProvider.credential(
-                                verificationId: NumberAuthentication.verify,
-                                smsCode: code);
+                                verificationId: verify, smsCode: code);
 
                         // Sign the user in (or link) with the credential
                         await auth.signInWithCredential(credential);
-                        if (await DatabaseHelper()
-                            .getExistance(NumberAuthentication.number)) {
+                        if (await DatabaseHelper().getExistance(number)) {
                           SharedPreferences pref =
                               await SharedPreferences.getInstance();
-                          pref.setString('number', NumberAuthentication.number);
+                          pref.setString('number', number);
                           pref.setBool('loggedIn', true);
-                          List<String> data = await DatabaseHelper()
-                              .getdata(NumberAuthentication.number);
+                          List<String> data =
+                              await DatabaseHelper().getdata(number);
                           // ignore: use_build_context_synchronously
                           Navigator.pushAndRemoveUntil(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) =>
-                                      home(data, NumberAuthentication.number)),
+                                  builder: (context) => home(data, number)),
                               (route) => false);
                         } else {
                           // ignore: use_build_context_synchronously
                           Navigator.pushAndRemoveUntil(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => const signup()),
+                                  builder: (context) => signup(number)),
                               (route) => false);
                         }
                         // ignore: empty_catches
